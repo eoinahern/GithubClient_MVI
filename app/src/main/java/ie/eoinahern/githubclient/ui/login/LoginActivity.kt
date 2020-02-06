@@ -2,10 +2,13 @@ package ie.eoinahern.githubclient.ui.login
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.lifecycle.ViewModelProvider
 import ie.eoinahern.githubclient.R
 import ie.eoinahern.githubclient.mvibase.MviView
+import ie.eoinahern.githubclient.util.getViewModel
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.activity_login.*
 
@@ -15,6 +18,9 @@ class LoginActivity : AppCompatActivity(), MviView<LoginIntent, LoginViewState> 
     private val passwordIntentPublisher = PublishSubject.create<LoginIntent.PasswordIntent>()
     private val attemptLoginIntentPublisher =
         PublishSubject.create<LoginIntent.AttemptLoginIntent>()
+
+
+    private val loginViewModel: LoginViewModel by getViewModel { LoginViewModel() }
 
     private val disposables = CompositeDisposable()
 
@@ -31,6 +37,10 @@ class LoginActivity : AppCompatActivity(), MviView<LoginIntent, LoginViewState> 
 
     }
 
+    private fun combinIntentOutput(): Observable<LoginIntent> {
+
+    }
+
     override fun onStart() {
         super.onStart()
         bind()
@@ -41,7 +51,8 @@ class LoginActivity : AppCompatActivity(), MviView<LoginIntent, LoginViewState> 
         disposables.clear()
     }
 
-    fun bind() {
-
+    private fun bind() {
+        disposables += loginViewModel.states().subscribe { viewState -> render(viewState) }
+        loginViewModel.processIntents(combinIntentOutput())
     }
 }

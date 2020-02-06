@@ -14,4 +14,6 @@ class LoginViewModel : ViewModel(), MviViewModel<LoginIntent, LoginViewState> {
     override fun states(): Observable<LoginViewState> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
+
+
 }
