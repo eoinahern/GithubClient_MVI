@@ -21,11 +21,6 @@ class LoginActivity : AppCompatActivity(), MviView<LoginIntent, LoginViewState> 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-
-        setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(false)
-        supportActionBar?.setDisplayShowTitleEnabled(true)
-
     }
 
     override fun intents(): Observable<LoginIntent> {
@@ -33,11 +28,12 @@ class LoginActivity : AppCompatActivity(), MviView<LoginIntent, LoginViewState> 
     }
 
     override fun render(state: LoginViewState) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 
     override fun onStart() {
         super.onStart()
+        bind()
     }
 
     override fun onStop() {
