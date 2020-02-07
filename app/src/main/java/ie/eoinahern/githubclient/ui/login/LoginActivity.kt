@@ -37,9 +37,9 @@ class LoginActivity : AppCompatActivity(), MviView<LoginIntent, LoginViewState> 
 
     }
 
-    private fun combinIntentOutput(): Observable<LoginIntent> {
+    /*private fun combineIntentOutput(): Observable<LoginIntent> {
 
-    }
+    }*/
 
     override fun onStart() {
         super.onStart()
@@ -53,6 +53,6 @@ class LoginActivity : AppCompatActivity(), MviView<LoginIntent, LoginViewState> 
 
     private fun bind() {
         disposables += loginViewModel.states().subscribe { viewState -> render(viewState) }
-        loginViewModel.processIntents(combinIntentOutput())
+        //loginViewModel.processIntents(combineIntentOutput())
     }
 }
