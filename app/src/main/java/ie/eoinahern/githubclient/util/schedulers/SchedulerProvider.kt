@@ -1,4 +1,4 @@
-package ie.eoinahern.githubclient.util
+package ie.eoinahern.githubclient.util.schedulers
 
 import io.reactivex.Scheduler
 

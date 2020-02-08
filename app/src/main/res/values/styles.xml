@@ -15,4 +15,9 @@
         <item name="android:textColorSecondary">@color/colorAccent</item>
     </style>
 
+
+    <style name="editTextLogin" >
+
+    </style>
+
 </resources>
