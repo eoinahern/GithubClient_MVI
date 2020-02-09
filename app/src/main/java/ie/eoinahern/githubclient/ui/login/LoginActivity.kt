@@ -1,10 +1,13 @@
 package ie.eoinahern.githubclient.ui.login
 
+import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import ie.eoinahern.githubclient.R
 import ie.eoinahern.githubclient.mvibase.MviView
+import ie.eoinahern.githubclient.util.constants.CLIENT_ID
 import ie.eoinahern.githubclient.util.getViewModel
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
@@ -27,6 +30,14 @@ class LoginActivity : AppCompatActivity(), MviView<LoginIntent, LoginViewState> 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+
+        val intent = Intent(
+            Intent.ACTION_VIEW,
+            Uri.parse("https://github.com/login/oauth/authorize" + "?client_id=${CLIENT_ID}")
+        )
+
+        startActivity(intent)
     }
 
     override fun intents(): Observable<LoginIntent> {
