@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import ie.eoinahern.githubclient.R
 import ie.eoinahern.githubclient.mvibase.MviView
@@ -18,8 +19,6 @@ import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity(), MviView<LoginIntent, LoginViewState> {
 
-    private val emailIntentPublisher = PublishSubject.create<LoginIntent.EmailIntent>()
-    private val passwordIntentPublisher = PublishSubject.create<LoginIntent.PasswordIntent>()
     private val attemptLoginIntentPublisher =
         PublishSubject.create<LoginIntent.AttemptLoginIntent>()
 
@@ -32,6 +31,13 @@ class LoginActivity : AppCompatActivity(), MviView<LoginIntent, LoginViewState> 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
+        loginButton.setOnClickListener {
+            loginUser()
+        }
+    }
+
+    private fun loginUser() {
+
         val intent = Intent(
             Intent.ACTION_VIEW,
             Uri.parse(
@@ -41,6 +47,20 @@ class LoginActivity : AppCompatActivity(), MviView<LoginIntent, LoginViewState> 
         )
 
         startActivity(intent)
+    }
+
+    private fun parseCallback() {
+        val uri = intent.data
+
+        uri?.let {
+            Toast.makeText(this, uri.toString(), Toast.LENGTH_LONG).show()
+            return@let
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        parseCallback()
     }
 
     override fun intents(): Observable<LoginIntent> {
