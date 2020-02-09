@@ -7,6 +7,7 @@ import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import ie.eoinahern.githubclient.R
 import ie.eoinahern.githubclient.mvibase.MviView
+import ie.eoinahern.githubclient.util.constants.CALLBACK_URL
 import ie.eoinahern.githubclient.util.constants.CLIENT_ID
 import ie.eoinahern.githubclient.util.getViewModel
 import io.reactivex.Observable
@@ -31,10 +32,12 @@ class LoginActivity : AppCompatActivity(), MviView<LoginIntent, LoginViewState> 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-
         val intent = Intent(
             Intent.ACTION_VIEW,
-            Uri.parse("https://github.com/login/oauth/authorize" + "?client_id=${CLIENT_ID}")
+            Uri.parse(
+                "https://github.com/login/oauth/authorize" +
+                        "?client_id=${CLIENT_ID}" + "&scope=repo&redirect_url=$CALLBACK_URL"
+            )
         )
 
         startActivity(intent)
