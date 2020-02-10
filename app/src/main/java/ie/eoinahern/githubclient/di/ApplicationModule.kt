@@ -13,7 +13,6 @@ import javax.inject.Singleton
 @Module
 class ApplicationModule(private val app: GithubApp) {
 
-
     @Singleton
     @Provides
     fun getContext(): Context = app.applicationContext
