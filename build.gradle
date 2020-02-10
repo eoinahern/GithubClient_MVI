@@ -20,6 +20,7 @@ buildscript {
         rxandroid_version = '2.1.1'
         dagger_version = '2.22.1'
         retrofit_version = '2.7.1'
+        moshi_version = '1.9.2'
     }
 }
 

@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.telecom.Call
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import ie.eoinahern.githubclient.R
@@ -52,9 +53,9 @@ class LoginActivity : AppCompatActivity(), MviView<LoginIntent, LoginViewState> 
     private fun parseCallback() {
         val uri = intent.data
 
-        uri?.let {
+        if (uri != null && uri.toString().startsWith(CALLBACK_URL)) {
+            val code = uri.getQueryParameter("code")
             Toast.makeText(this, uri.toString(), Toast.LENGTH_LONG).show()
-            return@let
         }
     }
 
