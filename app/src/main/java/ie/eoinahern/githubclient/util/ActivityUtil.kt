@@ -1,5 +1,6 @@
 package ie.eoinahern.githubclient.util
 
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

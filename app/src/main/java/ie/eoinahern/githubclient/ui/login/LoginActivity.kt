@@ -5,6 +5,7 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.telecom.Call
+import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import ie.eoinahern.githubclient.R
@@ -30,6 +31,14 @@ class LoginActivity : AppCompatActivity(), MviView<LoginIntent, LoginViewState> 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+
+        //check already have legit key for getting data.
+        // if not allow login button press.
+        // else navigate to repos activity.
+        // on first login call api. save and encrypt key.
+        // go to next screen.
+        // if fails show error. allow retry
 
         loginButton.setOnClickListener {
             loginUser()
@@ -57,22 +66,30 @@ class LoginActivity : AppCompatActivity(), MviView<LoginIntent, LoginViewState> 
         }
     }
 
+    private fun showLoading() {
+        loadingLayout.visibility = View.VISIBLE
+    }
+
+    private fun hideLoading() {
+        loadingLayout.visibility = View.GONE
+    }
+
     override fun onResume() {
         super.onResume()
         parseCallback()
     }
 
     override fun intents(): Observable<LoginIntent> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return Observable.just(LoginIntent.AttemptLoginIntent("email", "pass"))
     }
 
     override fun render(state: LoginViewState) {
 
     }
 
-    /*private fun combineIntentOutput(): Observable<LoginIntent> {
-
-    }*/
+    private fun combineIntentOutput(): Observable<LoginIntent> {
+        return Observable.just(LoginIntent.AttemptLoginIntent("email", "pass"))
+    }
 
     override fun onStart() {
         super.onStart()
@@ -86,6 +103,6 @@ class LoginActivity : AppCompatActivity(), MviView<LoginIntent, LoginViewState> 
 
     private fun bind() {
         disposables += loginViewModel.states().subscribe { viewState -> render(viewState) }
-        //loginViewModel.processIntents(combineIntentOutput())
+        loginViewModel.processIntents(combineIntentOutput())
     }
 }
