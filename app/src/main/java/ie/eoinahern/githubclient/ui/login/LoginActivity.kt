@@ -23,7 +23,6 @@ class LoginActivity : AppCompatActivity(), MviView<LoginIntent, LoginViewState> 
     private val attemptLoginIntentPublisher =
         PublishSubject.create<LoginIntent.AttemptLoginIntent>()
 
-
     private val loginViewModel: LoginViewModel by getViewModel { LoginViewModel() }
 
     private val disposables = CompositeDisposable()
@@ -55,7 +54,6 @@ class LoginActivity : AppCompatActivity(), MviView<LoginIntent, LoginViewState> 
 
         if (uri != null && uri.toString().startsWith(CALLBACK_URL)) {
             val code = uri.getQueryParameter("code")
-            Toast.makeText(this, uri.toString(), Toast.LENGTH_LONG).show()
         }
     }
 
