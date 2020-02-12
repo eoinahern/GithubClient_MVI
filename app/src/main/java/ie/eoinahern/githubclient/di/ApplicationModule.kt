@@ -17,10 +17,15 @@ class ApplicationModule(private val app: GithubApp) {
     @Provides
     fun getContext(): Context = app.applicationContext
 
-
     @Singleton
     @Provides
     fun getPrefs(context: Context): SharedPreferences =
-        PreferenceManager.getDefaultSharedPreferences(context)
+        context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
+
+    @Singleton
+    @Provides
+    fun getSharedPresEdit(prefs: SharedPreferences): SharedPreferences.Editor {
+        return prefs.edit()
+    }
 
 }
