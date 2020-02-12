@@ -22,7 +22,7 @@ import kotlinx.android.synthetic.main.activity_login.*
 class LoginActivity : AppCompatActivity(), MviView<LoginIntent, LoginViewState> {
 
     private val attemptLoginIntentPublisher =
-        PublishSubject.create<LoginIntent.AttemptLoginIntent>()
+        PublishSubject.create<LoginIntent.AuthUserIntent>()
 
     private val loginViewModel: LoginViewModel by getViewModel { LoginViewModel() }
 
@@ -74,21 +74,25 @@ class LoginActivity : AppCompatActivity(), MviView<LoginIntent, LoginViewState> 
         loadingLayout.visibility = View.GONE
     }
 
+    private fun setErrorMessage(error: String) {
+        messageText.text = error
+    }
+
     override fun onResume() {
         super.onResume()
         parseCallback()
     }
 
     override fun intents(): Observable<LoginIntent> {
-        return Observable.just(LoginIntent.AttemptLoginIntent("email", "pass"))
+        return Observable.just(LoginIntent.AuthUserIntent("email"))
     }
 
     override fun render(state: LoginViewState) {
-
+        //do viewstate stuff!!!
     }
 
     private fun combineIntentOutput(): Observable<LoginIntent> {
-        return Observable.just(LoginIntent.AttemptLoginIntent("email", "pass"))
+        return Observable.just(LoginIntent.AuthUserIntent("email"))
     }
 
     override fun onStart() {
