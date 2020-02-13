@@ -1,6 +1,7 @@
 package ie.eoinahern.githubclient.data.login
 
 import android.content.SharedPreferences
+import android.util.Base64
 import ie.eoinahern.githubclient.data.GithubApi
 import ie.eoinahern.githubclient.util.constants.CLIENT_ID
 import ie.eoinahern.githubclient.util.constants.CLIENT_SECRET
@@ -16,11 +17,7 @@ class LoginRepository @Inject constructor(
     private val encryptionUtil: EncryptionUtil
 ) {
 
-    /**
-     * get user key either from pref
-     */
-
-    fun getUserKey(): Observable<String> {
+    fun getUserToken(): Observable<String> {
 
         val key = sharedPreferences.getString(GITHUB_TOKEN_KEY, "")
 
@@ -28,8 +25,9 @@ class LoginRepository @Inject constructor(
             Observable.just(key)
         } else {
             api.getAuthToken(CLIENT_ID, CLIENT_SECRET, "").map {
+                saveUserToken(it.accessToken)
                 it.accessToken
-            }.doAfterNext { saveUserKey() }
+            }
         }
     }
 
@@ -38,7 +36,9 @@ class LoginRepository @Inject constructor(
      * encrypt key and save it to shared prefs!!
      */
 
-    private fun saveUserKey() {
-
+    private fun saveUserToken(token: String) {
+        val encryptedToken = encryptionUtil.encrypt(token.toByteArray(Charsets.UTF_8))
+        sharedPrefsEdit.putString("token", Base64.encodeToString(encryptedToken, Base64.NO_WRAP))
+            .commit()
     }
 }
