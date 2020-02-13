@@ -5,19 +5,23 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.telecom.Call
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import ie.eoinahern.githubclient.GithubApp
 import ie.eoinahern.githubclient.R
 import ie.eoinahern.githubclient.mvibase.MviView
 import ie.eoinahern.githubclient.util.constants.CALLBACK_URL
 import ie.eoinahern.githubclient.util.constants.CLIENT_ID
+import ie.eoinahern.githubclient.util.encrypt.EncryptionUtil
 import ie.eoinahern.githubclient.util.getViewModel
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.activity_login.*
+import javax.inject.Inject
 
 class LoginActivity : AppCompatActivity(), MviView<LoginIntent, LoginViewState> {
 
@@ -26,11 +30,16 @@ class LoginActivity : AppCompatActivity(), MviView<LoginIntent, LoginViewState> 
 
     private val loginViewModel: LoginViewModel by getViewModel { LoginViewModel() }
 
+    @Inject
+    lateinit var encryptionUtil: EncryptionUtil
+
     private val disposables = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        (application as GithubApp).getAppComponent().inject(this)
 
 
         //check already have legit key for getting data.
@@ -40,9 +49,19 @@ class LoginActivity : AppCompatActivity(), MviView<LoginIntent, LoginViewState> 
         // go to next screen.
         // if fails show error. allow retry
 
+        //testEncryption()
+
         loginButton.setOnClickListener {
             loginUser()
         }
+    }
+
+    private fun testEncryption() {
+
+        val result = encryptionUtil.encrypt("forky fork!!!".toByteArray(Charsets.UTF_8))
+        val decrypted = encryptionUtil.decrypt(result)
+        val decryptedString = String(decrypted, Charsets.UTF_8)
+        Log.d("decrypted", decryptedString)
     }
 
     private fun loginUser() {

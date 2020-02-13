@@ -2,11 +2,17 @@ package ie.eoinahern.githubclient.di
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.security.keystore.KeyGenParameterSpec
+import android.security.keystore.KeyProperties
 import androidx.preference.PreferenceManager
 import dagger.Module
 import dagger.Provides
 
 import ie.eoinahern.githubclient.GithubApp
+import ie.eoinahern.githubclient.util.constants.KEYSTORE_ALIAS
+import ie.eoinahern.githubclient.util.constants.KEYSTORE_PROVIDER
+import java.security.KeyStore
+import javax.crypto.KeyGenerator
 import javax.inject.Singleton
 
 
@@ -27,5 +33,27 @@ class ApplicationModule(private val app: GithubApp) {
     fun getSharedPresEdit(prefs: SharedPreferences): SharedPreferences.Editor {
         return prefs.edit()
     }
+
+    @Singleton
+    @Provides
+    fun getKeyGenerator(): KeyGenerator {
+        return KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, KEYSTORE_PROVIDER)
+    }
+
+    @Singleton
+    @Provides
+    fun getKeySpec(): KeyGenParameterSpec {
+        return KeyGenParameterSpec.Builder(
+            KEYSTORE_ALIAS,
+            KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT
+        )
+            .setBlockModes(KeyProperties.BLOCK_MODE_GCM)
+            .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE)
+            .build()
+    }
+
+    @Singleton
+    @Provides
+    fun getKeyStore() = KeyStore.getInstance(KEYSTORE_PROVIDER)
 
 }
