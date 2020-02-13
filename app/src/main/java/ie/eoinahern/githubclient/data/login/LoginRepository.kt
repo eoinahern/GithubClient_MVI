@@ -8,6 +8,7 @@ import ie.eoinahern.githubclient.util.constants.CLIENT_SECRET
 import ie.eoinahern.githubclient.util.constants.GITHUB_TOKEN_KEY
 import ie.eoinahern.githubclient.util.encrypt.EncryptionUtil
 import io.reactivex.Observable
+import java.nio.charset.Charset
 import javax.inject.Inject
 
 
@@ -17,20 +18,21 @@ class LoginRepository @Inject constructor(
     private val encryptionUtil: EncryptionUtil
 ) {
 
-    fun getUserToken(): Observable<String> {
-
-        val key = sharedPreferences.getString(GITHUB_TOKEN_KEY, "")
-
-        return if (!key.isNullOrEmpty()) {
-            Observable.just(key)
-        } else {
-            api.getAuthToken(CLIENT_ID, CLIENT_SECRET, "").map {
-                saveUserToken(it.accessToken)
-                it.accessToken
+    fun getUserToken(accessCode: String): Observable<String> =
+        Observable.just(sharedPreferences.getString(GITHUB_TOKEN_KEY, ""))
+            .flatMap { key ->
+                if (key.isNotEmpty()) {
+                    Observable.just(key).map {
+                        val bytes = encryptionUtil.decrypt(Base64.decode(it, Base64.NO_WRAP))
+                        String(bytes, Charsets.UTF_8)
+                    }
+                } else {
+                    api.getAuthToken(CLIENT_ID, CLIENT_SECRET, accessCode).map {
+                        saveUserToken(it.accessToken)
+                        it.accessToken
+                    }
+                }
             }
-        }
-    }
-
 
     /**
      * encrypt key and save it to shared prefs!!
@@ -41,7 +43,6 @@ class LoginRepository @Inject constructor(
         sharedPrefsEdit.putString(
             GITHUB_TOKEN_KEY,
             Base64.encodeToString(encryptedToken, Base64.NO_WRAP)
-        )
-            .commit()
+        ).commit()
     }
 }

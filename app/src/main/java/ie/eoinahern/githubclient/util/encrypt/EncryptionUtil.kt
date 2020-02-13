@@ -11,6 +11,8 @@ import javax.crypto.SecretKey
 import javax.crypto.spec.GCMParameterSpec
 import javax.inject.Inject
 
+private const val IV_KEY = "iv"
+
 class EncryptionUtil @Inject constructor(
     private val keyGenerator: KeyGenerator,
     private val keyGenParameterSpec: KeyGenParameterSpec,
@@ -18,8 +20,6 @@ class EncryptionUtil @Inject constructor(
     private val prefs: SharedPreferences,
     private val editPrefs: SharedPreferences.Editor
 ) {
-
-    private lateinit var ivBytes: ByteArray
 
     init {
         keyGenerator.init(keyGenParameterSpec)
@@ -30,9 +30,9 @@ class EncryptionUtil @Inject constructor(
     fun encrypt(data: ByteArray): ByteArray {
         val cipher = Cipher.getInstance(TRANSFORMATION_AES)
         cipher.init(Cipher.ENCRYPT_MODE, getSecretKey())
-        ivBytes = cipher.iv
+        val ivBytes = cipher.iv
         editPrefs.putString(
-            "iv",
+            IV_KEY,
             android.util.Base64.encodeToString(ivBytes, android.util.Base64.NO_WRAP)
         ).commit()
         return cipher.doFinal(data)
@@ -41,7 +41,7 @@ class EncryptionUtil @Inject constructor(
 
     fun decrypt(data: ByteArray): ByteArray {
         val cipher = Cipher.getInstance(TRANSFORMATION_AES)
-        val strIV = prefs.getString("iv", "")
+        val strIV = prefs.getString(IV_KEY, "")
         val iv = android.util.Base64.decode(strIV, android.util.Base64.NO_WRAP)
         val spec = GCMParameterSpec(128, iv)
         cipher.init(Cipher.DECRYPT_MODE, getSecretKey(), spec)
