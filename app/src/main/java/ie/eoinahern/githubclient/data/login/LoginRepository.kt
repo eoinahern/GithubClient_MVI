@@ -38,7 +38,10 @@ class LoginRepository @Inject constructor(
 
     private fun saveUserToken(token: String) {
         val encryptedToken = encryptionUtil.encrypt(token.toByteArray(Charsets.UTF_8))
-        sharedPrefsEdit.putString("token", Base64.encodeToString(encryptedToken, Base64.NO_WRAP))
+        sharedPrefsEdit.putString(
+            GITHUB_TOKEN_KEY,
+            Base64.encodeToString(encryptedToken, Base64.NO_WRAP)
+        )
             .commit()
     }
 }
