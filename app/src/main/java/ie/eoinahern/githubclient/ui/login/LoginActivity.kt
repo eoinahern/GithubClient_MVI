@@ -49,7 +49,7 @@ class LoginActivity : AppCompatActivity(), MviView<LoginIntent, LoginViewState> 
         // go to next screen.
         // if fails show error. allow retry
 
-        //testEncryption()
+        testEncryption()
 
         loginButton.setOnClickListener {
             loginUser()
@@ -58,7 +58,7 @@ class LoginActivity : AppCompatActivity(), MviView<LoginIntent, LoginViewState> 
 
     private fun testEncryption() {
 
-        val result = encryptionUtil.encrypt("forky fork!!!".toByteArray(Charsets.UTF_8))
+        val result = encryptionUtil.encrypt("test!!!!!".toByteArray(Charsets.UTF_8))
         val decrypted = encryptionUtil.decrypt(result)
         val decryptedString = String(decrypted, Charsets.UTF_8)
         Log.d("decrypted", decryptedString)
