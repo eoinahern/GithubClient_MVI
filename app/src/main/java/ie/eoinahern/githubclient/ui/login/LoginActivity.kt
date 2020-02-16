@@ -28,7 +28,9 @@ class LoginActivity : AppCompatActivity(), MviView<LoginIntent, LoginViewState> 
     private val attemptLoginIntentPublisher =
         PublishSubject.create<LoginIntent.AuthUserIntent>()
 
-    private val loginViewModel: LoginViewModel by getViewModel { LoginViewModel() }
+
+    // need to replace. inject
+    //private val loginViewModel: LoginViewModel by getViewModel { LoginViewModel() }
 
     @Inject
     lateinit var encryptionUtil: EncryptionUtil
