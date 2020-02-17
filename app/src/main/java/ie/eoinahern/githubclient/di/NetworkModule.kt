@@ -1,6 +1,5 @@
 package ie.eoinahern.githubclient.di
 
-import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
 import ie.eoinahern.githubclient.data.GithubApi

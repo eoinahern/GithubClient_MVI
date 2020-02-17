@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import ie.eoinahern.githubclient.GithubApp
 import ie.eoinahern.githubclient.R
 import ie.eoinahern.githubclient.mvibase.MviView
@@ -16,6 +17,7 @@ import ie.eoinahern.githubclient.util.constants.CALLBACK_URL
 import ie.eoinahern.githubclient.util.constants.CLIENT_ID
 import ie.eoinahern.githubclient.util.encrypt.EncryptionUtil
 import ie.eoinahern.githubclient.util.getViewModel
+import ie.eoinahern.githubclient.util.viewmodel.ViewModelCreationFactory
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
@@ -28,12 +30,10 @@ class LoginActivity : AppCompatActivity(), MviView<LoginIntent, LoginViewState> 
     private val attemptLoginIntentPublisher =
         PublishSubject.create<LoginIntent.AuthUserIntent>()
 
-
-    // need to replace. inject
-    //private val loginViewModel: LoginViewModel by getViewModel { LoginViewModel() }
+    private lateinit var loginViewModel: LoginViewModel
 
     @Inject
-    lateinit var encryptionUtil: EncryptionUtil
+    lateinit var factory: ViewModelCreationFactory
 
     private val disposables = CompositeDisposable()
 
@@ -43,27 +43,15 @@ class LoginActivity : AppCompatActivity(), MviView<LoginIntent, LoginViewState> 
 
         (application as GithubApp).getAppComponent().inject(this)
 
-
-        //check already have legit key for getting data.
-        // if not allow login button press.
-        // else navigate to repos activity.
-        // on first login call api. save and encrypt key.
-        // go to next screen.
-        // if fails show error. allow retry
-
-        testEncryption()
+        createViewModel()
 
         loginButton.setOnClickListener {
             loginUser()
         }
     }
 
-    private fun testEncryption() {
-
-        val result = encryptionUtil.encrypt("test!!!!!".toByteArray(Charsets.UTF_8))
-        val decrypted = encryptionUtil.decrypt(result)
-        val decryptedString = String(decrypted, Charsets.UTF_8)
-        Log.d("decrypted", decryptedString)
+    private fun createViewModel() {
+        loginViewModel = ViewModelProviders.of(this, factory).get(LoginViewModel::class.java)
     }
 
     private fun loginUser() {
@@ -109,7 +97,6 @@ class LoginActivity : AppCompatActivity(), MviView<LoginIntent, LoginViewState> 
     }
 
     override fun render(state: LoginViewState) {
-        //do viewstate stuff!!!
     }
 
     private fun combineIntentOutput(): Observable<LoginIntent> {
