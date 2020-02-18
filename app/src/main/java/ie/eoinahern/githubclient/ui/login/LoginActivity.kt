@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProviders
 import ie.eoinahern.githubclient.GithubApp
 import ie.eoinahern.githubclient.R
 import ie.eoinahern.githubclient.mvibase.MviView
+import ie.eoinahern.githubclient.ui.repos.ReposActivity
 import ie.eoinahern.githubclient.util.constants.CALLBACK_URL
 import ie.eoinahern.githubclient.util.constants.CLIENT_ID
 import ie.eoinahern.githubclient.util.encrypt.EncryptionUtil
@@ -27,7 +28,7 @@ import javax.inject.Inject
 
 class LoginActivity : AppCompatActivity(), MviView<LoginIntent, LoginViewState> {
 
-    private val attemptLoginIntentPublisher =
+    private val authUserPublisher =
         PublishSubject.create<LoginIntent.AuthUserIntent>()
 
     private lateinit var loginViewModel: LoginViewModel
@@ -75,6 +76,10 @@ class LoginActivity : AppCompatActivity(), MviView<LoginIntent, LoginViewState> 
         }
     }
 
+    private fun authUserIntent(): Observable<LoginIntent.AuthUserIntent> {
+        return authUserPublisher
+    }
+
     private fun showLoading() {
         loadingLayout.visibility = View.VISIBLE
     }
@@ -87,6 +92,10 @@ class LoginActivity : AppCompatActivity(), MviView<LoginIntent, LoginViewState> 
         messageText.text = error
     }
 
+    private fun goToNext() {
+        startActivity(Intent(this, ReposActivity::class.java))
+    }
+
     override fun onResume() {
         super.onResume()
         parseCallback()
@@ -97,6 +106,16 @@ class LoginActivity : AppCompatActivity(), MviView<LoginIntent, LoginViewState> 
     }
 
     override fun render(state: LoginViewState) {
+
+        if (state.isProcessing) showLoading() else hideLoading()
+
+        state.generalFail?.let { error ->
+            setErrorMessage(error.message ?: "error Loading")
+        } ?: setErrorMessage("")
+
+        if (state.loginComplete) {
+            goToNext()
+        }
     }
 
     private fun combineIntentOutput(): Observable<LoginIntent> {
