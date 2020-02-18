@@ -3,10 +3,13 @@ package ie.eoinahern.githubclient.ui.login
 import androidx.lifecycle.ViewModel
 import ie.eoinahern.githubclient.mvibase.MviViewModel
 import io.reactivex.Observable
+import io.reactivex.functions.BiFunction
 import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
+import ie.eoinahern.githubclient.ui.login.LoginResult.LoginAttemptResult.*
 
-class LoginViewModel @Inject constructor(private val actionProcessorHolder: LoginProcessorHolder) : ViewModel(),
+class LoginViewModel @Inject constructor(private val actionProcessorHolder: LoginProcessorHolder) :
+    ViewModel(),
     MviViewModel<LoginIntent, LoginViewState> {
 
     private val intentsSubject: PublishSubject<LoginIntent> = PublishSubject.create()
@@ -26,9 +29,48 @@ class LoginViewModel @Inject constructor(private val actionProcessorHolder: Logi
     }
 
     private fun compose(): Observable<LoginViewState> {
-        return intentsSubject.map{
-            intent -> getActionFromIntent(intent)
-        }.compose()
+        return intentsSubject.map { intent ->
+            getActionFromIntent(intent)
+        }.compose(actionProcessorHolder.actionProcessor)
+            .scan(LoginViewState.getInitState(), reducer)
+    }
+
+
+    companion object {
+
+        val reducer = BiFunction { viewState: LoginViewState, result: LoginResult ->
+            when (result) {
+                is LoginResult.LoginAttemptResult -> reduceAuthUser(viewState, result)
+            }
+        }
+
+
+        private fun reduceAuthUser(
+            previousState: LoginViewState, result: LoginResult.LoginAttemptResult
+        ): LoginViewState {
+            return when (result) {
+                is Processing -> {
+                    previousState.copy(
+                        isProcessing = true,
+                        generalFail = null
+                    )
+                }
+                is Success -> {
+                    previousState.copy(
+                        isProcessing = false,
+                        generalFail = null,
+                        loginComplete = true
+                    )
+
+                }
+                is Failure -> {
+                    previousState.copy(
+                        isProcessing = false,
+                        generalFail = result.error
+                    )
+                }
+            }
+        }
     }
 
 }
