@@ -11,6 +11,8 @@ import dagger.Provides
 import ie.eoinahern.githubclient.GithubApp
 import ie.eoinahern.githubclient.util.constants.KEYSTORE_ALIAS
 import ie.eoinahern.githubclient.util.constants.KEYSTORE_PROVIDER
+import ie.eoinahern.githubclient.util.schedulers.MainAppSchedulers
+import ie.eoinahern.githubclient.util.schedulers.SchedulerProvider
 import java.security.KeyStore
 import javax.crypto.KeyGenerator
 import javax.inject.Singleton
@@ -39,6 +41,10 @@ class ApplicationModule(private val app: GithubApp) {
     fun getKeyGenerator(): KeyGenerator {
         return KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, KEYSTORE_PROVIDER)
     }
+
+    @Singleton
+    @Provides
+    fun getSchedulerProvider(): SchedulerProvider = MainAppSchedulers()
 
     @Singleton
     @Provides

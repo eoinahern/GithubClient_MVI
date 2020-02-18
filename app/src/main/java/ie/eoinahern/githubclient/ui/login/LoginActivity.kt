@@ -72,7 +72,8 @@ class LoginActivity : AppCompatActivity(), MviView<LoginIntent, LoginViewState> 
         val uri = intent.data
 
         if (uri != null && uri.toString().startsWith(CALLBACK_URL)) {
-            val code = uri.getQueryParameter("code")
+            val code = uri.getQueryParameter("code") ?: ""
+            authUserPublisher.onNext(LoginIntent.AuthUserIntent(code))
         }
     }
 
@@ -101,9 +102,7 @@ class LoginActivity : AppCompatActivity(), MviView<LoginIntent, LoginViewState> 
         parseCallback()
     }
 
-    override fun intents(): Observable<LoginIntent> {
-        return Observable.just(LoginIntent.AuthUserIntent("email"))
-    }
+    override fun intents(): Observable<LoginIntent> = authUserIntent().cast(LoginIntent::class.java)
 
     override fun render(state: LoginViewState) {
 
@@ -118,9 +117,6 @@ class LoginActivity : AppCompatActivity(), MviView<LoginIntent, LoginViewState> 
         }
     }
 
-    private fun combineIntentOutput(): Observable<LoginIntent> {
-        return Observable.just(LoginIntent.AuthUserIntent("email"))
-    }
 
     override fun onStart() {
         super.onStart()
@@ -134,6 +130,6 @@ class LoginActivity : AppCompatActivity(), MviView<LoginIntent, LoginViewState> 
 
     private fun bind() {
         disposables += loginViewModel.states().subscribe { viewState -> render(viewState) }
-        loginViewModel.processIntents(combineIntentOutput())
+        loginViewModel.processIntents(intents())
     }
 }
