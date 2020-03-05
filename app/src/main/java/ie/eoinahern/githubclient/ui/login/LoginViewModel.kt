@@ -33,6 +33,7 @@ class LoginViewModel @Inject constructor(private val actionProcessorHolder: Logi
             getActionFromIntent(intent)
         }.compose(actionProcessorHolder.actionProcessor)
             .scan(LoginViewState.getInitState(), reducer)
+            .distinctUntilChanged()
     }
 
 
@@ -46,7 +47,8 @@ class LoginViewModel @Inject constructor(private val actionProcessorHolder: Logi
 
 
         private fun reduceAuthUser(
-            previousState: LoginViewState, result: LoginResult.LoginAttemptResult
+            previousState: LoginViewState,
+            result: LoginResult.LoginAttemptResult
         ): LoginViewState {
             return when (result) {
                 is Processing -> {
