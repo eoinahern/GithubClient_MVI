@@ -2,6 +2,7 @@ package ie.eoinahern.githubclient.data.login
 
 import android.content.SharedPreferences
 import android.util.Base64
+import android.util.Log
 import ie.eoinahern.githubclient.data.GithubApi
 import ie.eoinahern.githubclient.util.constants.CLIENT_ID
 import ie.eoinahern.githubclient.util.constants.CLIENT_SECRET
@@ -21,6 +22,8 @@ class LoginRepository @Inject constructor(
     fun getUserToken(accessCode: String): Observable<String> =
         Observable.just(sharedPreferences.getString(GITHUB_TOKEN_KEY, ""))
             .flatMap { key ->
+
+                Log.d("repo thread", Thread.currentThread().name)
                 if (key.isNotEmpty()) {
                     Observable.just(key).map {
                         val bytes = encryptionUtil.decrypt(Base64.decode(it, Base64.NO_WRAP))

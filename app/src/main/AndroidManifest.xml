@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ie.eoinahern.githubclient">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".GithubApp"
         android:allowBackup="true"
@@ -23,8 +25,9 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="eoinahern"
-                    android:host="client_app"/>
+                <data
+                    android:host="client_app"
+                    android:scheme="eoinahern" />
 
             </intent-filter>
         </activity>

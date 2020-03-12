@@ -39,9 +39,9 @@ class LoginViewModel @Inject constructor(private val actionProcessorHolder: Logi
 
     companion object {
 
-        val reducer = BiFunction { viewState: LoginViewState, result: LoginResult ->
+        val reducer = BiFunction { previousVState: LoginViewState, result: LoginResult ->
             when (result) {
-                is LoginResult.LoginAttemptResult -> reduceAuthUser(viewState, result)
+                is LoginResult.LoginAttemptResult -> reduceAuthUser(previousVState, result)
             }
         }
 

@@ -1,5 +1,6 @@
 package ie.eoinahern.githubclient.ui.login
 
+import android.util.Log
 import ie.eoinahern.githubclient.data.login.LoginRepository
 import ie.eoinahern.githubclient.util.schedulers.SchedulerProvider
 import io.reactivex.Observable
@@ -14,16 +15,15 @@ class LoginProcessorHolder @Inject constructor(
 
     private val loginProcessor =
         ObservableTransformer<LoginAction.AuthUserAction, LoginResult.LoginAttemptResult> { action ->
-            action.flatMap { auth ->
-                repo.getUserToken(auth.code)
-            }.map { apiKey ->
-                println("my api key!!! $apiKey")
-                LoginResult.LoginAttemptResult.Success
-            }
+            action.observeOn(schedulerProvider.getIOSchecduler())
+                .flatMap { auth ->
+                    repo.getUserToken(auth.code)
+                }.map { _ ->
+                    LoginResult.LoginAttemptResult.Success
+                }
                 .cast(LoginResult.LoginAttemptResult::class.java)
                 .onErrorReturn(LoginResult.LoginAttemptResult::Failure)
-                .subscribeOn(schedulerProvider.getIOSchecduler())
-                .observeOn(schedulerProvider.getIOSchecduler())
+                .observeOn(schedulerProvider.getMainSchedulers())
                 .startWith(LoginResult.LoginAttemptResult.Processing)
         }
 
@@ -32,6 +32,4 @@ class LoginProcessorHolder @Inject constructor(
         ObservableTransformer<LoginAction, LoginResult> { actions ->
             actions.ofType(LoginAction.AuthUserAction::class.java).compose(loginProcessor)
         }
-
-
 }
