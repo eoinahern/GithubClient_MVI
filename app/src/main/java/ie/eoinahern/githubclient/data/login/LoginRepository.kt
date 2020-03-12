@@ -3,6 +3,7 @@ package ie.eoinahern.githubclient.data.login
 import android.content.SharedPreferences
 import android.util.Base64
 import android.util.Log
+import androidx.annotation.UiThread
 import ie.eoinahern.githubclient.data.GithubApi
 import ie.eoinahern.githubclient.util.constants.CLIENT_ID
 import ie.eoinahern.githubclient.util.constants.CLIENT_SECRET
@@ -10,7 +11,6 @@ import ie.eoinahern.githubclient.util.constants.GITHUB_TOKEN_KEY
 import ie.eoinahern.githubclient.util.constants.TOKEN_PREFIX
 import ie.eoinahern.githubclient.util.encrypt.EncryptionUtil
 import io.reactivex.Observable
-import java.nio.charset.Charset
 import javax.inject.Inject
 
 
@@ -23,12 +23,12 @@ class LoginRepository @Inject constructor(
     fun getUserToken(accessCode: String): Observable<String> =
         Observable.just(sharedPreferences.getString(GITHUB_TOKEN_KEY, ""))
             .flatMap { key ->
-
-                Log.d("repo thread", Thread.currentThread().name)
                 if (key.isNotEmpty()) {
-                    Observable.just(key).map {
-                        val bytes = encryptionUtil.decrypt(Base64.decode(it, Base64.NO_WRAP))
-                        String(bytes, Charsets.UTF_8)
+                    Observable.just(key).map { innerKey ->
+                        val decoded = Base64.decode(innerKey, Base64.NO_WRAP)
+                        val bytes = encryptionUtil.decrypt(decoded)
+                        val decrypted = String(bytes, Charsets.UTF_8)
+                        decrypted
                     }
                 } else {
                     api.getAuthToken(
@@ -41,15 +41,12 @@ class LoginRepository @Inject constructor(
                 }
             }
 
-    /**
-     * encrypt key and save it to shared prefs!!
-     */
-
     private fun saveUserToken(token: String) {
         val encryptedToken = encryptionUtil.encrypt(token.toByteArray(Charsets.UTF_8))
+        val encryptedString = Base64.encodeToString(encryptedToken, Base64.NO_WRAP)
         sharedPrefsEdit.putString(
             GITHUB_TOKEN_KEY,
-            Base64.encodeToString(encryptedToken, Base64.NO_WRAP)
+            encryptedString
         ).commit()
     }
 }

@@ -21,6 +21,7 @@ class EncryptionUtil @Inject constructor(
     private val editPrefs: SharedPreferences.Editor
 ) {
 
+
     init {
         keyGenerator.init(keyGenParameterSpec)
         keyGenerator.generateKey()
@@ -31,9 +32,10 @@ class EncryptionUtil @Inject constructor(
         val cipher = Cipher.getInstance(TRANSFORMATION_AES)
         cipher.init(Cipher.ENCRYPT_MODE, getSecretKey())
         val ivBytes = cipher.iv
+        val encryptedIV = android.util.Base64.encodeToString(ivBytes, android.util.Base64.NO_WRAP)
         editPrefs.putString(
             IV_KEY,
-            android.util.Base64.encodeToString(ivBytes, android.util.Base64.NO_WRAP)
+            encryptedIV
         ).commit()
         return cipher.doFinal(data)
     }
@@ -41,17 +43,17 @@ class EncryptionUtil @Inject constructor(
 
     fun decrypt(data: ByteArray): ByteArray {
         val cipher = Cipher.getInstance(TRANSFORMATION_AES)
-        val strIV = prefs.getString(IV_KEY, "")
-        val iv = android.util.Base64.decode(strIV, android.util.Base64.NO_WRAP)
+        val encryptedIV = prefs.getString(IV_KEY, "")
+        val secretKey = getSecretKey()
+        val iv = android.util.Base64.decode(encryptedIV, android.util.Base64.NO_WRAP)
         val spec = GCMParameterSpec(128, iv)
-        cipher.init(Cipher.DECRYPT_MODE, getSecretKey(), spec)
+        cipher.init(Cipher.DECRYPT_MODE, secretKey, spec)
         return cipher.doFinal(data)
+
     }
 
-
     private fun getSecretKey(): SecretKey {
-        val secretKeyEntry =
-            keyStore.getEntry(KEYSTORE_ALIAS, null) as KeyStore.SecretKeyEntry
+        val secretKeyEntry = keyStore.getEntry(KEYSTORE_ALIAS, null) as KeyStore.SecretKeyEntry
         return secretKeyEntry.secretKey
     }
 }

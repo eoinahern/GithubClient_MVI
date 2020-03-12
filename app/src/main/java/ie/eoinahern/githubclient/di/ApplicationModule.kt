@@ -52,14 +52,13 @@ class ApplicationModule(private val app: GithubApp) {
         return KeyGenParameterSpec.Builder(
             KEYSTORE_ALIAS,
             KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT
-        )
-            .setBlockModes(KeyProperties.BLOCK_MODE_GCM)
+        ).setBlockModes(KeyProperties.BLOCK_MODE_GCM)
             .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE)
             .build()
     }
 
     @Singleton
     @Provides
-    fun getKeyStore() = KeyStore.getInstance(KEYSTORE_PROVIDER)
+    fun getKeyStore(): KeyStore = KeyStore.getInstance(KEYSTORE_PROVIDER)
 
 }

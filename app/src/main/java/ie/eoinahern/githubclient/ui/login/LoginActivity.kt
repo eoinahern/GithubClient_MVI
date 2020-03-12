@@ -4,6 +4,8 @@ import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.security.keystore.KeyGenParameterSpec
+import android.security.keystore.KeyProperties
 import android.telecom.Call
 import android.util.Log
 import android.view.View
@@ -16,6 +18,7 @@ import ie.eoinahern.githubclient.mvibase.MviView
 import ie.eoinahern.githubclient.ui.repos.ReposActivity
 import ie.eoinahern.githubclient.util.constants.CALLBACK_URL
 import ie.eoinahern.githubclient.util.constants.CLIENT_ID
+import ie.eoinahern.githubclient.util.constants.KEYSTORE_ALIAS
 import ie.eoinahern.githubclient.util.encrypt.EncryptionUtil
 import ie.eoinahern.githubclient.util.getViewModel
 import ie.eoinahern.githubclient.util.viewmodel.ViewModelCreationFactory
@@ -24,6 +27,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.activity_login.*
+import java.nio.charset.Charset
 import javax.inject.Inject
 
 class LoginActivity : AppCompatActivity(), MviView<LoginIntent, LoginViewState> {
@@ -35,6 +39,9 @@ class LoginActivity : AppCompatActivity(), MviView<LoginIntent, LoginViewState> 
 
     @Inject
     lateinit var factory: ViewModelCreationFactory
+
+    @Inject
+    lateinit var encrypt: EncryptionUtil
 
     private val disposables = CompositeDisposable()
 
@@ -49,7 +56,17 @@ class LoginActivity : AppCompatActivity(), MviView<LoginIntent, LoginViewState> 
         loginButton.setOnClickListener {
             loginUser()
         }
+
+        //testEncrypt()
     }
+
+    /*private fun testEncrypt() {
+        val ans = encrypt.encrypt("fuckyou".toByteArray(Charset.defaultCharset()))
+        val bytes = encrypt.decrypt(ans)
+        val str = String(bytes, Charsets.UTF_8)
+        println(str)
+    }*/
+
 
     private fun createViewModel() {
         loginViewModel = ViewModelProviders.of(this, factory).get(LoginViewModel::class.java)
@@ -134,3 +151,4 @@ class LoginActivity : AppCompatActivity(), MviView<LoginIntent, LoginViewState> 
         loginViewModel.processIntents(intents())
     }
 }
+
