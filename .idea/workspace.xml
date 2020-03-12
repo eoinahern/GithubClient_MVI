@@ -6,20 +6,15 @@
     </shared>
   </component>
   <component name="AndroidLogFilters">
-    <option name="TOOL_WINDOW_CUSTOM_FILTER" value="repo thread" />
     <option name="TOOL_WINDOW_LOG_LEVEL" value="debug" />
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="dfef0caf-6ccd-48bc-bd48-1111ed15b732" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/eoinahern/githubclient/data/GithubApi.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/eoinahern/githubclient/data/GithubApi.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/eoinahern/githubclient/data/login/LoginRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/eoinahern/githubclient/data/login/LoginRepository.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/eoinahern/githubclient/ui/login/LoginProcessorHolder.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/eoinahern/githubclient/ui/login/LoginProcessorHolder.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/eoinahern/githubclient/ui/login/LoginViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/eoinahern/githubclient/ui/login/LoginViewModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/eoinahern/githubclient/ui/login/LoginActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/eoinahern/githubclient/ui/login/LoginActivity.kt" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -221,16 +216,6 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/ie/eoinahern/githubclient/ui/login/LoginActivity.kt</url>
-          <line>96</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/ie/eoinahern/githubclient/ui/login/LoginActivity.kt</url>
-          <line>115</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/ie/eoinahern/githubclient/ui/login/LoginViewModel.kt</url>
           <line>62</line>
           <option name="timeStamp" value="8" />
@@ -242,13 +227,23 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/ie/eoinahern/githubclient/data/login/LoginRepository.kt</url>
-          <line>25</line>
-          <option name="timeStamp" value="11" />
+          <line>35</line>
+          <option name="timeStamp" value="21" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/ie/eoinahern/githubclient/ui/login/LoginViewModel.kt</url>
           <line>70</line>
-          <option name="timeStamp" value="15" />
+          <option name="timeStamp" value="22" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/ie/eoinahern/githubclient/data/login/LoginRepository.kt</url>
+          <line>29</line>
+          <option name="timeStamp" value="23" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/ie/eoinahern/githubclient/data/login/LoginRepository.kt</url>
+          <line>30</line>
+          <option name="timeStamp" value="24" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

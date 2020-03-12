@@ -7,6 +7,7 @@ import ie.eoinahern.githubclient.data.GithubApi
 import ie.eoinahern.githubclient.util.constants.CLIENT_ID
 import ie.eoinahern.githubclient.util.constants.CLIENT_SECRET
 import ie.eoinahern.githubclient.util.constants.GITHUB_TOKEN_KEY
+import ie.eoinahern.githubclient.util.constants.TOKEN_PREFIX
 import ie.eoinahern.githubclient.util.encrypt.EncryptionUtil
 import io.reactivex.Observable
 import java.nio.charset.Charset
@@ -30,7 +31,10 @@ class LoginRepository @Inject constructor(
                         String(bytes, Charsets.UTF_8)
                     }
                 } else {
-                    api.getAuthToken(CLIENT_ID, CLIENT_SECRET, accessCode).map {
+                    api.getAuthToken(
+                        CLIENT_ID, CLIENT_SECRET,
+                        accessCode, TOKEN_PREFIX.plus(accessCode)
+                    ).map {
                         saveUserToken(it.accessToken)
                         it.accessToken
                     }

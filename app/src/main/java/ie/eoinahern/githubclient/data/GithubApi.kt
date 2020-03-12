@@ -2,10 +2,7 @@ package ie.eoinahern.githubclient.data
 
 import ie.eoinahern.githubclient.data.model.AccessToken
 import io.reactivex.Observable
-import retrofit2.http.Field
-import retrofit2.http.Headers
-import retrofit2.http.POST
-import retrofit2.http.Query
+import retrofit2.http.*
 
 
 interface GithubApi {
@@ -15,7 +12,8 @@ interface GithubApi {
     fun getAuthToken(
         @Query("client_id") id: String,
         @Query("client_secret") secret: String,
-        @Query("code") code: String
+        @Query("code") code: String,
+        @Header("Authorization") authCode: String
     ): Observable<AccessToken>
 
 }

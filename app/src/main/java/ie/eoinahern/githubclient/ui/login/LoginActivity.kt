@@ -95,6 +95,7 @@ class LoginActivity : AppCompatActivity(), MviView<LoginIntent, LoginViewState> 
 
     private fun goToNext() {
         startActivity(Intent(this, ReposActivity::class.java))
+        finish()
     }
 
     override fun onResume() {
