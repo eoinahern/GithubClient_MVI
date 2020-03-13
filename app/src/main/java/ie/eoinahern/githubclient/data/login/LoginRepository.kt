@@ -11,6 +11,7 @@ import ie.eoinahern.githubclient.util.constants.GITHUB_TOKEN_KEY
 import ie.eoinahern.githubclient.util.constants.TOKEN_PREFIX
 import ie.eoinahern.githubclient.util.encrypt.EncryptionUtil
 import io.reactivex.Observable
+import java.nio.charset.Charset
 import javax.inject.Inject
 
 
@@ -42,7 +43,7 @@ class LoginRepository @Inject constructor(
             }
 
     private fun saveUserToken(token: String) {
-        val encryptedToken = encryptionUtil.encrypt(token.toByteArray(Charsets.UTF_8))
+        val encryptedToken = encryptionUtil.encrypt(token.toByteArray(Charset.defaultCharset()))
         val encryptedString = Base64.encodeToString(encryptedToken, Base64.NO_WRAP)
         sharedPrefsEdit.putString(
             GITHUB_TOKEN_KEY,

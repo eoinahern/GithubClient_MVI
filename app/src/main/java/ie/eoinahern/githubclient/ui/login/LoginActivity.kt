@@ -57,15 +57,15 @@ class LoginActivity : AppCompatActivity(), MviView<LoginIntent, LoginViewState> 
             loginUser()
         }
 
-        //testEncrypt()
+        testEncrypt()
     }
 
-    /*private fun testEncrypt() {
+    private fun testEncrypt() {
         val ans = encrypt.encrypt("fuckyou".toByteArray(Charset.defaultCharset()))
         val bytes = encrypt.decrypt(ans)
         val str = String(bytes, Charsets.UTF_8)
         println(str)
-    }*/
+    }
 
 
     private fun createViewModel() {
