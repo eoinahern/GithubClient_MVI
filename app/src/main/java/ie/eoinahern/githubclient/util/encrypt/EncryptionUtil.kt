@@ -5,15 +5,14 @@ import android.security.keystore.KeyGenParameterSpec
 import ie.eoinahern.githubclient.util.constants.KEYSTORE_ALIAS
 import ie.eoinahern.githubclient.util.constants.TRANSFORMATION_AES
 import java.security.KeyStore
-import java.security.SecureRandom
 import javax.crypto.Cipher
 import javax.crypto.KeyGenerator
 import javax.crypto.SecretKey
 import javax.crypto.spec.GCMParameterSpec
-import javax.crypto.spec.IvParameterSpec
 import javax.inject.Inject
 
 private const val IV_KEY = "iv"
+
 
 class EncryptionUtil @Inject constructor(
     private val keyGenerator: KeyGenerator,
@@ -24,9 +23,11 @@ class EncryptionUtil @Inject constructor(
 ) {
 
     init {
-        keyGenerator.init(keyGenParameterSpec)
-        keyGenerator.generateKey()
         keyStore.load(null)
+        if (!keyStore.containsAlias(KEYSTORE_ALIAS)) {
+            keyGenerator.init(keyGenParameterSpec)
+            keyGenerator.generateKey()
+        }
     }
 
     @Synchronized
