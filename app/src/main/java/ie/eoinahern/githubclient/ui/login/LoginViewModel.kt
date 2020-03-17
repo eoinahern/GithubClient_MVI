@@ -25,13 +25,16 @@ class LoginViewModel @Inject constructor(private val actionProcessorHolder: Logi
     private fun getActionFromIntent(intent: LoginIntent): LoginAction {
         return when (intent) {
             is LoginIntent.AuthUserIntent -> LoginAction.AuthUserAction(intent.code)
+            is LoginIntent.CheckHasKey -> {
+                LoginAction.AuthUserAction("dddd")
+            }
         }
     }
 
     private fun compose(): Observable<LoginViewState> {
         return intentsSubject.map { intent ->
-            getActionFromIntent(intent)
-        }.compose(actionProcessorHolder.actionProcessor)
+                getActionFromIntent(intent)
+            }.compose(actionProcessorHolder.actionProcessor)
             .scan(LoginViewState.getInitState(), reducer)
             .distinctUntilChanged()
     }

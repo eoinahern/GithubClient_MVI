@@ -56,17 +56,7 @@ class LoginActivity : AppCompatActivity(), MviView<LoginIntent, LoginViewState> 
         loginButton.setOnClickListener {
             loginUser()
         }
-
-        //testEncrypt()
     }
-
-    private fun testEncrypt() {
-        /*val ans = encrypt.encrypt("fuckyou".toByteArray(Charset.defaultCharset()))
-        val bytes = encrypt.decrypt(ans)
-        val str = String(bytes, Charsets.UTF_8)
-        println(str)*/
-    }
-
 
     private fun createViewModel() {
         loginViewModel = ViewModelProviders.of(this, factory).get(LoginViewModel::class.java)
