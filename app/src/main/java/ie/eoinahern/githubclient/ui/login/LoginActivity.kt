@@ -35,13 +35,14 @@ class LoginActivity : AppCompatActivity(), MviView<LoginIntent, LoginViewState> 
     private val authUserPublisher =
         PublishSubject.create<LoginIntent.AuthUserIntent>()
 
+
+    private val checkHaveKey: PublishSubject<LoginIntent.CheckHasKey> =
+        PublishSubject.create()
+
     private lateinit var loginViewModel: LoginViewModel
 
     @Inject
     lateinit var factory: ViewModelCreationFactory
-
-    @Inject
-    lateinit var encrypt: EncryptionUtil
 
     private val disposables = CompositeDisposable()
 
@@ -107,7 +108,12 @@ class LoginActivity : AppCompatActivity(), MviView<LoginIntent, LoginViewState> 
 
     override fun onResume() {
         super.onResume()
+        checkHaveKey()
         parseCallback()
+    }
+
+    private fun checkHaveKey() {
+        checkHaveKey.onNext(LoginIntent.CheckHasKey)
     }
 
     override fun intents(): Observable<LoginIntent> = authUserIntent().cast(LoginIntent::class.java)
