@@ -25,9 +25,7 @@ class LoginViewModel @Inject constructor(private val actionProcessorHolder: Logi
     private fun getActionFromIntent(intent: LoginIntent): LoginAction {
         return when (intent) {
             is LoginIntent.AuthUserIntent -> LoginAction.AuthUserAction(intent.code)
-            is LoginIntent.CheckHasKey -> {
-                LoginAction.AuthUserAction("dddd")
-            }
+            is LoginIntent.CheckHasKey -> LoginAction.CheckHasKeyAction
         }
     }
 
@@ -45,6 +43,15 @@ class LoginViewModel @Inject constructor(private val actionProcessorHolder: Logi
         val reducer = BiFunction { previousVState: LoginViewState, result: LoginResult ->
             when (result) {
                 is LoginResult.LoginAttemptResult -> reduceAuthUser(previousVState, result)
+            }
+        }
+
+        private fun reduceCheckHasKey(
+            previousViewState: LoginViewState,
+            result: LoginResult.LoginAttemptResult
+        ): LoginViewState {
+            return when(result) {
+
             }
         }
 

@@ -9,4 +9,10 @@ sealed class LoginResult : MviResult {
         object Success : LoginAttemptResult()
         data class Failure(val error: Throwable) : LoginAttemptResult()
     }
+
+    sealed class CheckHasKeyResult : LoginResult() {
+        object Processing : CheckHasKeyResult()
+        data class Success(val key: String) : CheckHasKeyResult()
+        object Failure : CheckHasKeyResult()
+    }
 }
