@@ -70,7 +70,7 @@ class LoginViewModel @Inject constructor(private val actionProcessorHolder: Logi
                 is CheckHasKeyResult.Success -> {
                     previousViewState.copy(
                         loginComplete = true,
-                        visibleLoginButton = true,
+                        visibleLoginButton = false,
                         key = result.key
                     )
                 }

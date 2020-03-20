@@ -11,6 +11,7 @@ import ie.eoinahern.githubclient.util.constants.GITHUB_TOKEN_KEY
 import ie.eoinahern.githubclient.util.constants.TOKEN_PREFIX
 import ie.eoinahern.githubclient.util.encrypt.EncryptionUtil
 import io.reactivex.Observable
+import java.lang.IllegalArgumentException
 import java.nio.charset.Charset
 import javax.inject.Inject
 
@@ -51,8 +52,21 @@ class LoginRepository @Inject constructor(
         ).commit()
     }
 
+    private fun getKeyFromPrefs(): String {
+        val encryptedKey = sharedPreferences.getString(GITHUB_TOKEN_KEY, "")
+        val decoded = Base64.decode(encryptedKey, Base64.NO_WRAP)
+        val bytes = encryptionUtil.decrypt(decoded)
+        val decrypted = String(bytes, Charsets.UTF_8)
+
+        if (decrypted.isEmpty()) {
+            throw IllegalArgumentException("empty key")
+        }
+
+        return decrypted
+    }
+
 
     fun checkHasLocalToken(): Observable<String> {
-        return Observable.just("")
+        return Observable.just(getKeyFromPrefs())
     }
 }

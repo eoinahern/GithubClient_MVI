@@ -43,13 +43,21 @@ class LoginProcessorHolder @Inject constructor(
                 }
                 .observeOn(schedulerProvider.getMainSchedulers())
                 .startWith(LoginResult.CheckHasKeyResult.Processing)
-
-
         }
 
 
-    internal val actionProcessor =
-        ObservableTransformer<LoginAction, LoginResult> { actions ->
-            actions.ofType(LoginAction.AuthUserAction::class.java).compose(loginProcessor)
-        }
+    internal val actionProcessor = ObservableTransformer<LoginAction, LoginResult> { actions ->
+
+        Observable.merge(
+                actions.ofType(LoginAction.AuthUserAction::class.java).compose(loginProcessor),
+                actions.ofType(LoginAction.CheckHasKeyAction::class.java)
+                    .compose(checkLocalKeyProcessor)
+            )
+            .mergeWith(actions.filter { itm ->
+                itm !is LoginAction.CheckHasKeyAction && itm !is LoginAction.AuthUserAction
+            }.flatMap { _ ->
+                Observable.error<LoginResult>(IllegalArgumentException("error"))
+            })
+
+    }
 }

@@ -105,8 +105,11 @@ class LoginActivity : AppCompatActivity(), MviView<LoginIntent, LoginViewState> 
         messageText.text = error
     }
 
-    private fun goToNext() {
-        startActivity(Intent(this, ReposActivity::class.java))
+    private fun goToNext(key: String) {
+        val intent = Intent(this, ReposActivity::class.java)
+        intent.putExtra("key", key)
+        startActivity(intent)
+
         finish()
     }
 
@@ -135,8 +138,8 @@ class LoginActivity : AppCompatActivity(), MviView<LoginIntent, LoginViewState> 
             setErrorMessage(error.message ?: "error Loading")
         } ?: setErrorMessage("")
 
-        if (state.loginComplete) {
-            goToNext()
+        if (state.loginComplete && !state.key.isNullOrEmpty()) {
+            goToNext(state.key)
         }
     }
 

@@ -15,6 +15,7 @@
       <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/eoinahern/githubclient/data/login/LoginRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/eoinahern/githubclient/data/login/LoginRepository.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/eoinahern/githubclient/ui/login/LoginActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/eoinahern/githubclient/ui/login/LoginActivity.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/eoinahern/githubclient/ui/login/LoginProcessorHolder.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/eoinahern/githubclient/ui/login/LoginProcessorHolder.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/eoinahern/githubclient/ui/login/LoginViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/eoinahern/githubclient/ui/login/LoginViewModel.kt" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -290,8 +291,18 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/ie/eoinahern/githubclient/ui/login/LoginActivity.kt</url>
-          <line>119</line>
+          <line>122</line>
           <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/ie/eoinahern/githubclient/ui/login/LoginActivity.kt</url>
+          <line>109</line>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/ie/eoinahern/githubclient/ui/login/LoginActivity.kt</url>
+          <line>141</line>
+          <option name="timeStamp" value="8" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
