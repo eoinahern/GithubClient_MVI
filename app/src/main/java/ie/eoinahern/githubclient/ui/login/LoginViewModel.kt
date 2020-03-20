@@ -6,7 +6,8 @@ import io.reactivex.Observable
 import io.reactivex.functions.BiFunction
 import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
-import ie.eoinahern.githubclient.ui.login.LoginResult.LoginAttemptResult.*
+import ie.eoinahern.githubclient.ui.login.LoginResult.LoginAttemptResult
+import ie.eoinahern.githubclient.ui.login.LoginResult.CheckHasKeyResult
 
 class LoginViewModel @Inject constructor(private val actionProcessorHolder: LoginProcessorHolder) :
     ViewModel(),
@@ -42,40 +43,62 @@ class LoginViewModel @Inject constructor(private val actionProcessorHolder: Logi
 
         val reducer = BiFunction { previousVState: LoginViewState, result: LoginResult ->
             when (result) {
-                is LoginResult.LoginAttemptResult -> reduceAuthUser(previousVState, result)
+                is LoginAttemptResult -> reduceAuthUser(previousVState, result)
+                is CheckHasKeyResult -> reduceCheckHasKey(previousVState, result)
             }
         }
 
         private fun reduceCheckHasKey(
             previousViewState: LoginViewState,
-            result: LoginResult.LoginAttemptResult
+            result: CheckHasKeyResult
         ): LoginViewState {
-            return when(result) {
-
+            return when (result) {
+                is CheckHasKeyResult.Processing -> {
+                    previousViewState.copy(
+                        isProcessing = true,
+                        generalFail = null,
+                        loginComplete = false
+                    )
+                }
+                is CheckHasKeyResult.Failure -> {
+                    previousViewState.copy(
+                        loginComplete = false,
+                        isProcessing = false,
+                        visibleLoginButton = true
+                    )
+                }
+                is CheckHasKeyResult.Success -> {
+                    previousViewState.copy(
+                        loginComplete = true,
+                        visibleLoginButton = true,
+                        key = result.key
+                    )
+                }
             }
         }
 
 
         private fun reduceAuthUser(
             previousState: LoginViewState,
-            result: LoginResult.LoginAttemptResult
+            result: LoginAttemptResult
         ): LoginViewState {
             return when (result) {
-                is Processing -> {
+                is LoginAttemptResult.Processing -> {
                     previousState.copy(
                         isProcessing = true,
                         generalFail = null
                     )
                 }
-                is Success -> {
+                is LoginAttemptResult.Success -> {
                     previousState.copy(
                         isProcessing = false,
                         generalFail = null,
-                        loginComplete = true
+                        loginComplete = true,
+                        key = result.key
                     )
 
                 }
-                is Failure -> {
+                is LoginAttemptResult.Failure -> {
                     previousState.copy(
                         isProcessing = false,
                         generalFail = result.error

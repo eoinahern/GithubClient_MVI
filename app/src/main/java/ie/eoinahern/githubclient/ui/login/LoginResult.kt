@@ -6,7 +6,7 @@ sealed class LoginResult : MviResult {
 
     sealed class LoginAttemptResult : LoginResult() {
         object Processing : LoginAttemptResult()
-        object Success : LoginAttemptResult()
+        data class Success(val key: String) : LoginAttemptResult()
         data class Failure(val error: Throwable) : LoginAttemptResult()
     }
 

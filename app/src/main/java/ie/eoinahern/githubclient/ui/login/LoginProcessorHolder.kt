@@ -18,8 +18,8 @@ class LoginProcessorHolder @Inject constructor(
             action.observeOn(schedulerProvider.getIOSchecduler())
                 .flatMap { auth ->
                     repo.getUserToken(auth.code)
-                }.map { _ ->
-                    LoginResult.LoginAttemptResult.Success
+                }.map { key ->
+                    LoginResult.LoginAttemptResult.Success(key)
                 }
                 .cast(LoginResult.LoginAttemptResult::class.java)
                 .onErrorReturn(LoginResult.LoginAttemptResult::Failure)

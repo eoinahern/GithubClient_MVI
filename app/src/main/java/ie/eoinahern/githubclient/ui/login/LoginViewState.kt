@@ -5,14 +5,18 @@ import ie.eoinahern.githubclient.mvibase.MviViewState
 data class LoginViewState(
     val isProcessing: Boolean,
     val generalFail: Throwable?,
-    val loginComplete: Boolean
+    val loginComplete: Boolean,
+    val key: String?,
+    val visibleLoginButton: Boolean
 ) : MviViewState {
 
     companion object {
         fun getInitState(): LoginViewState = LoginViewState(
             isProcessing = false,
             generalFail = null,
-            loginComplete = false
+            key = null,
+            loginComplete = false,
+            visibleLoginButton = false
         )
     }
 }

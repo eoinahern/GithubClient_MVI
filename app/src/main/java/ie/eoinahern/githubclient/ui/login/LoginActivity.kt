@@ -24,6 +24,7 @@ import ie.eoinahern.githubclient.util.getViewModel
 import ie.eoinahern.githubclient.util.viewmodel.ViewModelCreationFactory
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.Observables
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.activity_login.*
@@ -36,7 +37,7 @@ class LoginActivity : AppCompatActivity(), MviView<LoginIntent, LoginViewState> 
         PublishSubject.create<LoginIntent.AuthUserIntent>()
 
 
-    private val checkHaveKey: PublishSubject<LoginIntent.CheckHasKey> =
+    private val checkHaveKeyPublisher: PublishSubject<LoginIntent.CheckHasKey> =
         PublishSubject.create()
 
     private lateinit var loginViewModel: LoginViewModel
@@ -85,8 +86,12 @@ class LoginActivity : AppCompatActivity(), MviView<LoginIntent, LoginViewState> 
         }
     }
 
-    private fun authUserIntent(): Observable<LoginIntent.AuthUserIntent> {
+    private fun getAuthUserIntent(): Observable<LoginIntent.AuthUserIntent> {
         return authUserPublisher
+    }
+
+    private fun getCheckHasKey(): Observable<LoginIntent.CheckHasKey> {
+        return checkHaveKeyPublisher
     }
 
     private fun showLoading() {
@@ -108,15 +113,20 @@ class LoginActivity : AppCompatActivity(), MviView<LoginIntent, LoginViewState> 
 
     override fun onResume() {
         super.onResume()
-        checkHaveKey()
+        checkUserHasKey()
         parseCallback()
     }
 
-    private fun checkHaveKey() {
-        checkHaveKey.onNext(LoginIntent.CheckHasKey)
+    private fun checkUserHasKey() {
+        checkHaveKeyPublisher.onNext(LoginIntent.CheckHasKey)
     }
 
-    override fun intents(): Observable<LoginIntent> = authUserIntent().cast(LoginIntent::class.java)
+    override fun intents(): Observable<LoginIntent> {
+        return Observable.merge(
+            getAuthUserIntent(),
+            getCheckHasKey()
+        ).cast(LoginIntent::class.java)
+    }
 
     override fun render(state: LoginViewState) {
 
@@ -130,7 +140,6 @@ class LoginActivity : AppCompatActivity(), MviView<LoginIntent, LoginViewState> 
             goToNext()
         }
     }
-
 
     override fun onStart() {
         super.onStart()
