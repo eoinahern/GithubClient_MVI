@@ -50,4 +50,9 @@ class LoginRepository @Inject constructor(
             encryptedString
         ).commit()
     }
+
+
+    fun checkHasLocalToken(): Observable<String> {
+        return Observable.just("")
+    }
 }

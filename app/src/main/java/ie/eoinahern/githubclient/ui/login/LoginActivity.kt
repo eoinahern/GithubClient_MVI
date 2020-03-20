@@ -36,7 +36,6 @@ class LoginActivity : AppCompatActivity(), MviView<LoginIntent, LoginViewState> 
     private val authUserPublisher =
         PublishSubject.create<LoginIntent.AuthUserIntent>()
 
-
     private val checkHaveKeyPublisher: PublishSubject<LoginIntent.CheckHasKey> =
         PublishSubject.create()
 
