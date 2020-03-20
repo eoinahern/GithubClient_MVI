@@ -130,6 +130,11 @@ class LoginActivity : AppCompatActivity(), MviView<LoginIntent, LoginViewState> 
         ).cast(LoginIntent::class.java)
     }
 
+    /**
+     * could model as sealed class. then we lose immutability
+     * and create a new sealed class element each call?
+     */
+
     override fun render(state: LoginViewState) {
 
         if (state.isProcessing) showLoading() else hideLoading()
@@ -137,6 +142,10 @@ class LoginActivity : AppCompatActivity(), MviView<LoginIntent, LoginViewState> 
         state.generalFail?.let { error ->
             setErrorMessage(error.message ?: "error Loading")
         } ?: setErrorMessage("")
+
+        if (state.visibleLoginButton) {
+            loginButton.visibility = View.VISIBLE
+        }
 
         if (state.loginComplete && !state.key.isNullOrEmpty()) {
             goToNext(state.key)

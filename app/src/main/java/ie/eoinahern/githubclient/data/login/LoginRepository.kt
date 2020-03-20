@@ -22,8 +22,13 @@ class LoginRepository @Inject constructor(
     private val encryptionUtil: EncryptionUtil
 ) {
 
+    /**
+     * shared prefs check unneccessary here as weve split them
+     * up into seprate calls!
+     */
+
     fun getUserToken(accessCode: String): Observable<String> =
-        Observable.just(sharedPreferences.getString(GITHUB_TOKEN_KEY, ""))
+        /*Observable.just(sharedPreferences.getString(GITHUB_TOKEN_KEY, ""))
             .flatMap { key ->
                 if (key.isNotEmpty()) {
                     Observable.just(key).map { innerKey ->
@@ -32,16 +37,15 @@ class LoginRepository @Inject constructor(
                         val decrypted = String(bytes, Charsets.UTF_8)
                         decrypted
                     }
-                } else {
-                    api.getAuthToken(
-                        CLIENT_ID, CLIENT_SECRET,
-                        accessCode, TOKEN_PREFIX.plus(accessCode)
-                    ).map {
-                        saveUserToken(it.accessToken)
-                        it.accessToken
-                    }
-                }
-            }
+                } else {*/
+        api.getAuthToken(
+            CLIENT_ID, CLIENT_SECRET,
+            accessCode, TOKEN_PREFIX.plus(accessCode)
+        ).map {
+            saveUserToken(it.accessToken)
+            it.accessToken
+        }
+
 
     private fun saveUserToken(token: String) {
         val encryptedToken = encryptionUtil.encrypt(token.toByteArray(Charset.defaultCharset()))
