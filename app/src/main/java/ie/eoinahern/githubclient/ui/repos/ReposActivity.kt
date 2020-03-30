@@ -5,16 +5,20 @@ import android.os.Bundle
 import androidx.lifecycle.ViewModelProviders
 import ie.eoinahern.githubclient.GithubApp
 import ie.eoinahern.githubclient.R
+import ie.eoinahern.githubclient.mvibase.MviView
 import ie.eoinahern.githubclient.util.viewmodel.ViewModelCreationFactory
+import io.reactivex.Observable
+import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.activity_repos.*
 import javax.inject.Inject
 
 
-class ReposActivity : AppCompatActivity() {
-
+class ReposActivity : AppCompatActivity(), MviView<ReposIntent, ReposViewState> {
 
     @Inject
     lateinit var factory: ViewModelCreationFactory
+
+    private val loadReposPublisher = PublishSubject.create<ReposIntent.LoadReposIntent>()
 
     private lateinit var viewModel: ReposViewModel
 
@@ -35,5 +39,25 @@ class ReposActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(false)
         supportActionBar?.setDisplayShowTitleEnabled(true)
+    }
+
+    override fun onStart() {
+        super.onStart()
+    }
+
+    override fun onStop() {
+        super.onStop()
+    }
+
+    private fun bind() {
+
+    }
+
+    override fun intents(): Observable<ReposIntent> {
+        TODO("Not yet implemented")
+    }
+
+    override fun render(state: ReposViewState) {
+
     }
 }

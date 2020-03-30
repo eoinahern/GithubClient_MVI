@@ -22,7 +22,6 @@ class LoginViewModel @Inject constructor(private val actionProcessorHolder: Logi
 
     override fun states(): Observable<LoginViewState> = statesObservable
 
-
     private fun getActionFromIntent(intent: LoginIntent): LoginAction {
         return when (intent) {
             is LoginIntent.AuthUserIntent -> LoginAction.AuthUserAction(intent.code)
@@ -107,5 +106,4 @@ class LoginViewModel @Inject constructor(private val actionProcessorHolder: Logi
             }
         }
     }
-
 }

@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import ie.eoinahern.githubclient.data.GithubApi
 import ie.eoinahern.githubclient.mvibase.MviViewModel
 import io.reactivex.Observable
+import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
 
 

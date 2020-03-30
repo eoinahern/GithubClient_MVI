@@ -25,7 +25,6 @@ class LoginProcessorHolder @Inject constructor(
                 .cast(LoginResult.LoginAttemptResult::class.java)
                 .onErrorReturn(LoginResult.LoginAttemptResult::Failure)
                 .observeOn(schedulerProvider.getMainSchedulers())
-                .startWith(LoginResult.LoginAttemptResult.Processing)
         }
 
     private val checkLocalKeyProcessor =
@@ -44,7 +43,6 @@ class LoginProcessorHolder @Inject constructor(
                 .observeOn(schedulerProvider.getMainSchedulers())
                 .startWith(LoginResult.CheckHasKeyResult.Processing)
         }
-
 
     internal val actionProcessor = ObservableTransformer<LoginAction, LoginResult> { actions ->
 
