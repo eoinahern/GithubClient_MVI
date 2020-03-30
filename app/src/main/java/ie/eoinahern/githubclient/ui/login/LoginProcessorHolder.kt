@@ -48,8 +48,7 @@ class LoginProcessorHolder @Inject constructor(
 
         Observable.merge(
                 actions.ofType(LoginAction.AuthUserAction::class.java).compose(loginProcessor),
-                actions.ofType(LoginAction.CheckHasKeyAction::class.java)
-                    .compose(checkLocalKeyProcessor)
+                actions.ofType(LoginAction.CheckHasKeyAction::class.java).compose(checkLocalKeyProcessor)
             )
             .mergeWith(actions.filter { itm ->
                 itm !is LoginAction.CheckHasKeyAction && itm !is LoginAction.AuthUserAction
