@@ -6,4 +6,9 @@ import javax.inject.Inject
 
 class ReposRepository @Inject constructor(private val api: GithubApi) {
 
+
+    fun getReposList() {
+
+    }
+
 }

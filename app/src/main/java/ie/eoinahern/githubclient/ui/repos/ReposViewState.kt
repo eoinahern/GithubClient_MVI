@@ -11,7 +11,8 @@ data class ReposViewState(
     companion object {
         fun getDefault(): ReposViewState {
             return ReposViewState(
-                "hello", false,
+                "hello",
+                false,
                 ""
             )
         }
