@@ -8,6 +8,8 @@ import ie.eoinahern.githubclient.R
 import ie.eoinahern.githubclient.mvibase.MviView
 import ie.eoinahern.githubclient.util.viewmodel.ViewModelCreationFactory
 import io.reactivex.Observable
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.activity_repos.*
 import javax.inject.Inject
@@ -17,6 +19,11 @@ class ReposActivity : AppCompatActivity(), MviView<ReposIntent, ReposViewState> 
 
     @Inject
     lateinit var factory: ViewModelCreationFactory
+
+    @Inject
+    lateinit var adapter: ReposActivityAdapter
+
+    private val disposables = CompositeDisposable()
 
     private val loadReposPublisher = PublishSubject.create<ReposIntent.LoadReposIntent>()
 
@@ -43,13 +50,16 @@ class ReposActivity : AppCompatActivity(), MviView<ReposIntent, ReposViewState> 
 
     override fun onStart() {
         super.onStart()
+        bind()
     }
 
     override fun onStop() {
+        disposables.clear()
         super.onStop()
     }
 
     private fun bind() {
+        disposables += viewModel.states().subscribe { render(it) }
 
     }
 
@@ -58,6 +68,6 @@ class ReposActivity : AppCompatActivity(), MviView<ReposIntent, ReposViewState> 
     }
 
     override fun render(state: ReposViewState) {
-
+        //render view!!! yay!!!
     }
 }

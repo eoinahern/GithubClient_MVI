@@ -3,9 +3,11 @@ package ie.eoinahern.githubclient.ui.repos
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import javax.inject.Inject
 
 
-class ReposActivityAdapter : RecyclerView.Adapter<ReposActivityAdapter.ViewHolder>() {
+class ReposActivityAdapter @Inject constructor() :
+    RecyclerView.Adapter<ReposActivityAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         TODO("Not yet implemented")
