@@ -17,9 +17,12 @@ class ReposProcessorHolder @Inject constructor(
         ObservableTransformer<ReposAction.LoadRepos, ReposResult.LoadResposResult> { action ->
             action
                 .observeOn(schedulerProvider.getIOSchecduler())
-                .flatMap {
-                    reposRepository.getReposList()
-                }
+                .flatMap { action ->
+                    reposRepository.getReposList(action.apiKey)
+                }.map { ReposResult.LoadResposResult::Success }
+                .cast(ReposResult.LoadResposResult::class.java)
+                .doOnError(ReposResult.LoadResposResult::LoadError)
+                .observeOn(schedulerProvider.getMainSchedulers())
         }
 
 

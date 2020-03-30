@@ -1,6 +1,7 @@
 package ie.eoinahern.githubclient.data
 
 import ie.eoinahern.githubclient.data.model.AccessToken
+import ie.eoinahern.githubclient.data.model.RepoItem
 import io.reactivex.Observable
 import retrofit2.http.*
 
@@ -15,5 +16,10 @@ interface GithubApi {
         @Query("code") code: String,
         @Header("Authorization") authCode: String
     ): Observable<AccessToken>
+
+
+    @GET("user/repos")
+    @Headers("Accept: application/json")
+    fun getRepos(@Header("Authorization") authCode: String): Observable<List<RepoItem>>
 
 }
