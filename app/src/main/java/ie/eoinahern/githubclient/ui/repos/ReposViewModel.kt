@@ -14,7 +14,7 @@ class ReposViewModel @Inject constructor(private val api: GithubApi) : ViewModel
     private fun convertToAction(intent: ReposIntent): ReposAction {
         return when (intent) {
             is ReposIntent.LoadReposIntent -> {
-                ReposAction.LoginAction(intent.apiKey)
+                ReposAction.LoadRepos(intent.apiKey)
             }
         }
     }

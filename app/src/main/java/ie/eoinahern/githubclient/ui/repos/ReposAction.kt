@@ -4,5 +4,5 @@ import ie.eoinahern.githubclient.mvibase.MviAction
 
 
 sealed class ReposAction : MviAction {
-    data class LoginAction(val apiKey: String) : ReposAction()
+    data class LoadRepos(val apiKey: String) : ReposAction()
 }
