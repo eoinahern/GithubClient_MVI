@@ -13,8 +13,9 @@ class ReposViewModel @Inject constructor(private val reposProcessHolder: ReposPr
     ViewModel(),
     MviViewModel<ReposIntent, ReposViewState> {
 
-    private val statesObs: Observable<ReposViewState> = compose()
+
     private val intentsSubject = PublishSubject.create<ReposIntent>()
+    private val statesObs: Observable<ReposViewState> = compose()
 
     private fun convertToAction(intent: ReposIntent): ReposAction {
         return when (intent) {
@@ -41,7 +42,9 @@ class ReposViewModel @Inject constructor(private val reposProcessHolder: ReposPr
     companion object {
 
         val reducer = BiFunction { viewState: ReposViewState, result: ReposResult ->
-            reduceGetRepos(viewState, result as LoadResposResult)
+            when (result) {
+                is LoadResposResult -> reduceGetRepos(viewState, result)
+            }
         }
 
         private fun reduceGetRepos(
@@ -51,10 +54,10 @@ class ReposViewModel @Inject constructor(private val reposProcessHolder: ReposPr
 
             return when (result) {
                 is LoadResposResult.Processing -> {
-                    previousViewState.copy(isProcessing = true)
+                    previousViewState.copy(isProcessing = true, data = listOf(), error = null)
                 }
                 is LoadResposResult.Success -> {
-                    previousViewState.copy(isProcessing = false, data = result.data)
+                    previousViewState.copy(isProcessing = false, data = result.data, error = null)
                 }
                 is LoadResposResult.LoadError -> {
                     previousViewState.copy(isProcessing = false, error = result.err)

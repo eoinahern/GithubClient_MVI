@@ -12,6 +12,7 @@ import ie.eoinahern.githubclient.util.viewmodel.ViewModelCreationFactory
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
+import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.activity_repos.*
 import javax.inject.Inject
@@ -68,13 +69,19 @@ class ReposActivity : AppCompatActivity(), MviView<ReposIntent, ReposViewState> 
     }
 
     override fun onStop() {
-        disposables.clear()
         super.onStop()
+        disposables.clear()
     }
 
     private fun bind() {
-        disposables += viewModel.states().subscribe { render(it) }
+        disposables += viewModel.states().subscribeBy(
+            onNext = {
+                render(it)
+            })
+        viewModel.processIntents(intents())
 
+        val key = intent.getStringExtra("key")
+        loadReposPublisher.onNext(ReposIntent.LoadReposIntent("token ".plus(key) ?: ""))
     }
 
     override fun intents(): Observable<ReposIntent> {

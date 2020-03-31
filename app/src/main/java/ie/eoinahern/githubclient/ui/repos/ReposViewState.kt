@@ -13,7 +13,7 @@ data class ReposViewState(
         fun getDefault(): ReposViewState {
             return ReposViewState(
                 null,
-                false,
+                true,
                 listOf()
             )
         }
