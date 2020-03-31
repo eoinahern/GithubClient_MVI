@@ -18,8 +18,4 @@ interface GithubApi {
     ): Observable<AccessToken>
 
 
-    @GET("user/repos")
-    @Headers("Accept: application/json")
-    fun getRepos(@Header("Authorization") authCode: String): Observable<List<RepoItem>>
-
 }

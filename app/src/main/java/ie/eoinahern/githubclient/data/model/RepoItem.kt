@@ -10,7 +10,7 @@ data class RepoItem(
     val name: String,
     @Json(name = "full_name")
     val fullName: String,
-    val description: String,
+    val description: String?,
     val language: String?,
     @Json(name = "updated_at")
     val lastUpdate: String

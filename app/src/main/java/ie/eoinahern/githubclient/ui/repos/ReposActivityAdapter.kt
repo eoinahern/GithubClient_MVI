@@ -18,7 +18,7 @@ class ReposActivityAdapter @Inject constructor() :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view: View =
             LayoutInflater.from(parent.context)
-                .inflate(R.layout.repos_single_item, parent)
+                .inflate(R.layout.repos_single_item, parent, false)
         return ViewHolder(view)
     }
 

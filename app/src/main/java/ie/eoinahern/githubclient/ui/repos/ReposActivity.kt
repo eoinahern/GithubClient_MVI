@@ -74,10 +74,7 @@ class ReposActivity : AppCompatActivity(), MviView<ReposIntent, ReposViewState> 
     }
 
     private fun bind() {
-        disposables += viewModel.states().subscribeBy(
-            onNext = {
-                render(it)
-            })
+        disposables += viewModel.states().subscribe { render(it) }
         viewModel.processIntents(intents())
 
         val key = intent.getStringExtra("key")

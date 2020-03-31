@@ -17,9 +17,7 @@ class ReposProcessorHolder @Inject constructor(
             actions.observeOn(schedulerProvider.getIOSchecduler())
                 .flatMap { action ->
                     reposRepository.getReposList(action.apiKey)
-                }.map { data ->
-                    ReposResult.LoadResposResult.Success(data)
-                }
+                }.map(ReposResult.LoadResposResult::Success)
                 .cast(ReposResult.LoadResposResult::class.java)
                 .observeOn(schedulerProvider.getMainSchedulers())
                 .onErrorReturn { throwable ->
