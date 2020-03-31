@@ -23,8 +23,8 @@ class ReposProcessorHolder @Inject constructor(
                 .cast(ReposResult.LoadResposResult::class.java)
                 .doOnError(ReposResult.LoadResposResult::LoadError)
                 .observeOn(schedulerProvider.getMainSchedulers())
+                .startWith(ReposResult.LoadResposResult.Processing)
         }
-
 
     internal val actionProcessor = ObservableTransformer<ReposAction, ReposResult> { actions ->
         Observable.merge(

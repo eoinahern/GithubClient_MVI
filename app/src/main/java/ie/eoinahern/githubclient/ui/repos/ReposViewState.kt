@@ -1,19 +1,20 @@
 package ie.eoinahern.githubclient.ui.repos
 
+import ie.eoinahern.githubclient.data.model.RepoItem
 import ie.eoinahern.githubclient.mvibase.MviViewState
 
 data class ReposViewState(
-    val name: String,
+    val error: Throwable?,
     val isProcessing: Boolean,
-    val data: String
+    val data: List<RepoItem>
 ) : MviViewState {
 
     companion object {
         fun getDefault(): ReposViewState {
             return ReposViewState(
-                "hello",
+                null,
                 false,
-                ""
+                listOf()
             )
         }
     }
