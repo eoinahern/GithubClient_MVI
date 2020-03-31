@@ -3,7 +3,10 @@ package ie.eoinahern.githubclient.ui.repos
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.LinearLayout.VERTICAL
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.RecyclerView
 import ie.eoinahern.githubclient.GithubApp
 import ie.eoinahern.githubclient.R
 import ie.eoinahern.githubclient.data.model.RepoItem
@@ -54,6 +57,7 @@ class ReposActivity : AppCompatActivity(), MviView<ReposIntent, ReposViewState> 
 
     private fun setUpAdapter() {
         recycler.adapter = adapter
+        recycler.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
     }
 
     private fun updateAdapter(list: List<RepoItem>) {

@@ -40,8 +40,6 @@
             android:indeterminate="true"
             android:indeterminateTint="@color/textColorLight"
             android:visibility="visible" />
-
-
     </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
