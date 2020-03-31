@@ -2,9 +2,11 @@ package ie.eoinahern.githubclient.ui.repos
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.lifecycle.ViewModelProviders
 import ie.eoinahern.githubclient.GithubApp
 import ie.eoinahern.githubclient.R
+import ie.eoinahern.githubclient.data.model.RepoItem
 import ie.eoinahern.githubclient.mvibase.MviView
 import ie.eoinahern.githubclient.util.viewmodel.ViewModelCreationFactory
 import io.reactivex.Observable
@@ -35,6 +37,7 @@ class ReposActivity : AppCompatActivity(), MviView<ReposIntent, ReposViewState> 
         setUpToolbar()
 
         (application as GithubApp).getAppComponent().inject(this)
+        setUpAdapter()
         setupViewModel()
     }
 
@@ -47,6 +50,17 @@ class ReposActivity : AppCompatActivity(), MviView<ReposIntent, ReposViewState> 
         supportActionBar?.setDisplayHomeAsUpEnabled(false)
         supportActionBar?.setDisplayShowTitleEnabled(true)
     }
+
+    private fun setUpAdapter() {
+        recycler.adapter = adapter
+    }
+
+    private fun updateAdapter(list: List<RepoItem>) {
+        adapter.updateAdapter(list)
+    }
+
+    private fun getLoadReposObservable(): Observable<ReposIntent.LoadReposIntent> =
+        loadReposPublisher
 
     override fun onStart() {
         super.onStart()
@@ -64,10 +78,16 @@ class ReposActivity : AppCompatActivity(), MviView<ReposIntent, ReposViewState> 
     }
 
     override fun intents(): Observable<ReposIntent> {
-        TODO("Not yet implemented")
+        return getLoadReposObservable().cast(ReposIntent::class.java)
     }
 
     override fun render(state: ReposViewState) {
-        //render view!!! yay!!!
+
+        if (state.isProcessing) progressbar.visibility = View.VISIBLE else progressbar.visibility =
+            View.GONE
+
+        if (!state.data.isNullOrEmpty()) {
+            updateAdapter(state.data)
+        }
     }
 }

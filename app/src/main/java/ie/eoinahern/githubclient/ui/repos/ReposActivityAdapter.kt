@@ -28,6 +28,13 @@ class ReposActivityAdapter @Inject constructor() :
         holder.bind(itemList[position])
     }
 
+    fun updateAdapter(listIn: List<RepoItem>) {
+        if (itemList.isEmpty()) {
+            itemList.addAll(listIn)
+            notifyDataSetChanged()
+        }
+    }
+
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         private val nameText = itemView.findViewById<TextView>(R.id.name)
