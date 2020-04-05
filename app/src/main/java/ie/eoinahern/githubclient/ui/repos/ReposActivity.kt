@@ -37,21 +37,17 @@ class ReposActivity : AppCompatActivity(), MviView<ReposIntent, ReposViewState> 
 
     private lateinit var viewModel: ReposViewModel
 
+    private var key: String = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_repos)
         setUpToolbar()
-
         (application as GithubApp).getAppComponent().inject(this)
         setUpAdapter()
         setupViewModel()
-
-        val key = intent.getStringExtra("key")
-        loadReposPublisher.onNext(ReposIntent.LoadReposIntent("token ".plus(key) ?: ""))
-    }
-
-    private fun setupViewModel() {
-        viewModel = ViewModelProviders.of(this, factory).get(ReposViewModel::class.java)
+        getApiKey()
+        loadRepos()
     }
 
     private fun setUpToolbar() {
@@ -65,8 +61,16 @@ class ReposActivity : AppCompatActivity(), MviView<ReposIntent, ReposViewState> 
         recycler.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
     }
 
-    private fun updateAdapter(list: List<RepoItem>) {
-        adapter.updateAdapter(list)
+    private fun setupViewModel() {
+        viewModel = ViewModelProviders.of(this, factory).get(ReposViewModel::class.java)
+    }
+
+    private fun getApiKey() {
+        key = intent.getStringExtra("key") ?: ""
+    }
+
+    private fun loadRepos() {
+        loadReposPublisher.onNext(ReposIntent.LoadReposIntent("token ".plus(key)))
     }
 
     private fun getLoadReposObservable(): Observable<ReposIntent.LoadReposIntent> =
@@ -99,5 +103,9 @@ class ReposActivity : AppCompatActivity(), MviView<ReposIntent, ReposViewState> 
             updateAdapter(state.data)
             recycler.isVisible = true
         }
+    }
+
+    private fun updateAdapter(list: List<RepoItem>) {
+        adapter.updateAdapter(list)
     }
 }
