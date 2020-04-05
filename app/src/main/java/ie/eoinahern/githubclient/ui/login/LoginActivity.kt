@@ -10,6 +10,7 @@ import android.telecom.Call
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import ie.eoinahern.githubclient.GithubApp
@@ -94,11 +95,11 @@ class LoginActivity : AppCompatActivity(), MviView<LoginIntent, LoginViewState> 
     }
 
     private fun showLoading() {
-        loadingLayout.visibility = View.VISIBLE
+        loadingLayout.isVisible = true
     }
 
     private fun hideLoading() {
-        loadingLayout.visibility = View.GONE
+        loadingLayout.isVisible = false
     }
 
     private fun setErrorMessage(error: String) {
@@ -144,7 +145,7 @@ class LoginActivity : AppCompatActivity(), MviView<LoginIntent, LoginViewState> 
         } ?: setErrorMessage("")
 
         if (state.visibleLoginButton) {
-            loginButton.visibility = View.VISIBLE
+            loginButton.isVisible = true
         }
 
         if (state.loginComplete && !state.key.isNullOrEmpty()) {

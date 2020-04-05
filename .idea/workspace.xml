@@ -12,9 +12,11 @@
   <component name="ChangeListManager">
     <list default="true" id="dfef0caf-6ccd-48bc-bd48-1111ed15b732" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/eoinahern/githubclient/data/repos/ReposRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/eoinahern/githubclient/data/repos/ReposRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/eoinahern/githubclient/ui/login/LoginActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/eoinahern/githubclient/ui/login/LoginActivity.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/eoinahern/githubclient/ui/repos/ReposActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/eoinahern/githubclient/ui/repos/ReposActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/eoinahern/githubclient/ui/repos/ReposProcessorHolder.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/eoinahern/githubclient/ui/repos/ReposProcessorHolder.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_repos.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_repos.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/repos_single_item.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/repos_single_item.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -54,7 +56,7 @@
     <property name="android.project.structure.last.selected" value="SDK Location" />
     <property name="android.project.structure.proportion" value="0.15" />
     <property name="android.sdk.path" value="$USER_HOME$/AppData/Local/Android/Sdk" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../cw-omnibus/DeviceAuth/SecureCheck" />
+    <property name="last_opened_file_path" value="$USER_HOME$/Desktop/rx_course_raywenderlich/4-006-combining-operators-in-practice-2/pre-recording/start" />
     <property name="not.eligible.for.single.variant.sync" value="true" />
     <property name="settings.editor.selected.configurable" value="AndroidSdkUpdater" />
     <property name="show.migrate.to.gradle.popup" value="false" />
@@ -285,22 +287,6 @@
         </entry>
       </map>
     </option>
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/ie/eoinahern/githubclient/ui/repos/ReposViewModel.kt</url>
-          <line>62</line>
-          <option name="timeStamp" value="77" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/ie/eoinahern/githubclient/ui/repos/ReposViewModel.kt</url>
-          <line>59</line>
-          <option name="timeStamp" value="78" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
   <component name="masterDetails">
     <states>

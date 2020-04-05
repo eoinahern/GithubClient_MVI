@@ -6,6 +6,11 @@ import io.reactivex.Observable
 import javax.inject.Inject
 
 
+/**
+ * a bit of uneccessary abstraction around the api here.
+ *
+ */
+
 class ReposRepository @Inject constructor(private val api: GithubOauthApi) {
 
     fun getReposList(apiKey: String): Observable<List<RepoItem>> = api.getRepos(apiKey)

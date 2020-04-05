@@ -23,7 +23,7 @@ class ReposProcessorHolder @Inject constructor(
                 .onErrorReturn { throwable ->
                     Log.d("error", throwable.message ?: "error")
                     ReposResult.LoadResposResult.LoadError(throwable)
-                }
+                }.distinctUntilChanged()
         }
 
     internal val actionProcessor = ObservableTransformer<ReposAction, ReposResult> { actions ->

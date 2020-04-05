@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.LinearLayout.VERTICAL
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
@@ -16,6 +17,7 @@ import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.rxkotlin.subscribeBy
+import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.activity_repos.*
 import javax.inject.Inject
@@ -31,7 +33,7 @@ class ReposActivity : AppCompatActivity(), MviView<ReposIntent, ReposViewState> 
 
     private val disposables = CompositeDisposable()
 
-    private val loadReposPublisher = PublishSubject.create<ReposIntent.LoadReposIntent>()
+    private val loadReposPublisher = BehaviorSubject.create<ReposIntent.LoadReposIntent>()
 
     private lateinit var viewModel: ReposViewModel
 
@@ -43,6 +45,9 @@ class ReposActivity : AppCompatActivity(), MviView<ReposIntent, ReposViewState> 
         (application as GithubApp).getAppComponent().inject(this)
         setUpAdapter()
         setupViewModel()
+
+        val key = intent.getStringExtra("key")
+        loadReposPublisher.onNext(ReposIntent.LoadReposIntent("token ".plus(key) ?: ""))
     }
 
     private fun setupViewModel() {
@@ -80,9 +85,6 @@ class ReposActivity : AppCompatActivity(), MviView<ReposIntent, ReposViewState> 
     private fun bind() {
         disposables += viewModel.states().subscribe { render(it) }
         viewModel.processIntents(intents())
-
-        val key = intent.getStringExtra("key")
-        loadReposPublisher.onNext(ReposIntent.LoadReposIntent("token ".plus(key) ?: ""))
     }
 
     override fun intents(): Observable<ReposIntent> {
@@ -91,11 +93,11 @@ class ReposActivity : AppCompatActivity(), MviView<ReposIntent, ReposViewState> 
 
     override fun render(state: ReposViewState) {
 
-        if (state.isProcessing) progressbar.visibility = View.VISIBLE else progressbar.visibility =
-            View.GONE
+        progressbar.isVisible = state.isProcessing && !recycler.isVisible
 
         if (!state.data.isNullOrEmpty()) {
             updateAdapter(state.data)
+            recycler.isVisible = true
         }
     }
 }
