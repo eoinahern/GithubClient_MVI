@@ -4,16 +4,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ie.eoinahern.githubclient.R
 import ie.eoinahern.githubclient.data.model.RepoItem
 import javax.inject.Inject
 
 
-class ReposActivityAdapter @Inject constructor() :
-    RecyclerView.Adapter<ReposActivityAdapter.ViewHolder>() {
-
-    private val itemList: MutableList<RepoItem> = mutableListOf()
+class ReposActivityAdapter @Inject constructor(private val diffUtilCallback: ReposDiffUtilCallback) :
+    PagedListAdapter<RepoItem, ReposActivityAdapter.ViewHolder>(diffUtilCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view: View =
@@ -22,16 +21,9 @@ class ReposActivityAdapter @Inject constructor() :
         return ViewHolder(view)
     }
 
-    override fun getItemCount(): Int = itemList.size
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(itemList[position])
-    }
-
-    fun updateAdapter(listIn: List<RepoItem>) {
-        if (itemList.isEmpty()) {
-            itemList.addAll(listIn)
-            notifyDataSetChanged()
+        getItem(position)?.let {
+            holder.bind(it)
         }
     }
 
@@ -45,4 +37,6 @@ class ReposActivityAdapter @Inject constructor() :
             languageText.text = repo.language ?: itemView.context.getString(R.string.unknown_txt)
         }
     }
+
+
 }
