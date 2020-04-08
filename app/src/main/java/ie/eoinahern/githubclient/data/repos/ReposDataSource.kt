@@ -4,12 +4,13 @@ package ie.eoinahern.githubclient.data.repos
 import androidx.paging.PageKeyedDataSource
 import ie.eoinahern.githubclient.data.GithubOauthApi
 import ie.eoinahern.githubclient.data.model.RepoItem
+import ie.eoinahern.githubclient.util.constants.PAGE_SIZE
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 
-class ReposDataSource constructor(private val api: GithubOauthApi, val key: String) :
+class ReposDataSource constructor(private val api: GithubOauthApi, private val key: String) :
     PageKeyedDataSource<Int, RepoItem>() {
 
     private var pageNumber: Int = 1
@@ -19,7 +20,7 @@ class ReposDataSource constructor(private val api: GithubOauthApi, val key: Stri
         callback: LoadInitialCallback<Int, RepoItem>
     ) {
 
-        api.getRepos(key, pageNumber, 25).enqueue(object :
+        api.getRepos(key, pageNumber, PAGE_SIZE).enqueue(object :
             Callback<List<RepoItem>> {
 
             override fun onFailure(call: Call<List<RepoItem>>, t: Throwable) {
@@ -34,6 +35,7 @@ class ReposDataSource constructor(private val api: GithubOauthApi, val key: Stri
 
                 if (response.isSuccessful) {
                     val list = response.body() ?: listOf()
+
                     callback.onResult(list, null, pageNumber + 1)
                 } else {
                     throw Exception("unsuccsessful request!!!  code : ${response.code()}")
@@ -44,11 +46,9 @@ class ReposDataSource constructor(private val api: GithubOauthApi, val key: Stri
 
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, RepoItem>) {
 
-
         val currentPage = params.key
-        val pageSize = 25
 
-        api.getRepos(key, currentPage, pageSize).enqueue(object :
+        api.getRepos(key, currentPage, PAGE_SIZE).enqueue(object :
             Callback<List<RepoItem>> {
 
             override fun onFailure(call: Call<List<RepoItem>>, t: Throwable) {
