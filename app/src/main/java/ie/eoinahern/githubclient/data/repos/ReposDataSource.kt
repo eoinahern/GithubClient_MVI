@@ -1,15 +1,18 @@
 package ie.eoinahern.githubclient.data.repos
 
+import android.util.Log
 import androidx.paging.PageKeyedDataSource
 import ie.eoinahern.githubclient.data.GithubOauthApi
 import ie.eoinahern.githubclient.data.model.RepoItem
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import javax.inject.Inject
 
 class ReposDataSource @Inject constructor(private val api: GithubOauthApi) :
     PageKeyedDataSource<Int, RepoItem>() {
 
     private var pageNumber: Int = 1
-    private var pageItems: Int = 25
     private lateinit var apiKey: String
 
     fun setKey(euIn: String) {
@@ -21,7 +24,29 @@ class ReposDataSource @Inject constructor(private val api: GithubOauthApi) :
         callback: LoadInitialCallback<Int, RepoItem>
     ) {
 
-        val items = api.getRepos(apiKey, pageNumber, pageItems)
+        val nextPage = pageNumber++
+
+        api.getRepos(apiKey, pageNumber, params.requestedLoadSize).enqueue(object :
+            Callback<List<RepoItem>> {
+
+            override fun onFailure(call: Call<List<RepoItem>>, t: Throwable) {
+                println(t.printStackTrace())
+                throw Exception(t.message)
+            }
+
+            override fun onResponse(
+                call: Call<List<RepoItem>>,
+                response: Response<List<RepoItem>>
+            ) {
+
+                if (response.isSuccessful) {
+                    val list = response.body()
+                    callback.onResult(list as MutableList<RepoItem>, null, nextPage)
+                } else {
+                    throw Exception("unsuccsessful request!!!  code : ${response.code()}")
+                }
+            }
+        })
     }
 
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, RepoItem>) {
@@ -29,7 +54,7 @@ class ReposDataSource @Inject constructor(private val api: GithubOauthApi) :
     }
 
     override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, RepoItem>) {
-        TODO("Not yet implemented")
+        println("in load before?????")
     }
 
 }

@@ -15,7 +15,7 @@ class ReposViewModel @Inject constructor(private val reposProcessHolder: ReposPr
 
 
     private val intentsSubject = PublishSubject.create<ReposIntent>()
-    private val statesObs: Observable<ReposViewState> = compose()
+    //private val statesObs: Observable<ReposViewState> = compose()
 
     private fun convertToAction(intent: ReposIntent): ReposAction {
         return when (intent) {
@@ -29,15 +29,17 @@ class ReposViewModel @Inject constructor(private val reposProcessHolder: ReposPr
         obs.subscribe(intentsSubject)
     }
 
-    private fun compose(): Observable<ReposViewState> {
-        return intentsSubject.map { intent ->
+    /*private fun compose(): Observable<ReposViewState> {
+       /* return intentsSubject.map { intent ->
             convertToAction(intent)
         }.compose(reposProcessHolder.actionProcessor)
             .scan(ReposViewState.getDefault(), reducer)
-            .distinctUntilChanged()
-    }
+            .distinctUntilChanged()*/
+    }*/
 
-    override fun states(): Observable<ReposViewState> = statesObs
+    //override fun states(): Observable<ReposViewState> = statesObs
+
+    override fun states(): Observable<ReposViewState> = Observable.just(ReposViewState.getDefault())
 
     companion object {
 
