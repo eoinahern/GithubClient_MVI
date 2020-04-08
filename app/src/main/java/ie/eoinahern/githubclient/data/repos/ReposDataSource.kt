@@ -8,16 +8,20 @@ import javax.inject.Inject
 class ReposDataSource @Inject constructor(private val api: GithubOauthApi) :
     PageKeyedDataSource<Int, RepoItem>() {
 
-
-    // maybe required provisionally
     private var pageNumber: Int = 1
     private var pageItems: Int = 25
+    private lateinit var apiKey: String
+
+    fun setKey(euIn: String) {
+        this.apiKey = euIn
+    }
 
     override fun loadInitial(
         params: LoadInitialParams<Int>,
         callback: LoadInitialCallback<Int, RepoItem>
     ) {
-        TODO("Not yet implemented")
+
+        val items = api.getRepos(apiKey, pageNumber, pageItems)
     }
 
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, RepoItem>) {
