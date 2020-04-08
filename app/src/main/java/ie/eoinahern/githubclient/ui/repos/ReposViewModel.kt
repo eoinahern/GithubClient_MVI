@@ -13,9 +13,8 @@ class ReposViewModel @Inject constructor(private val reposProcessHolder: ReposPr
     ViewModel(),
     MviViewModel<ReposIntent, ReposViewState> {
 
-
     private val intentsSubject = PublishSubject.create<ReposIntent>()
-    //private val statesObs: Observable<ReposViewState> = compose()
+    private val statesObs: Observable<ReposViewState> = compose()
 
     private fun convertToAction(intent: ReposIntent): ReposAction {
         return when (intent) {
@@ -29,17 +28,15 @@ class ReposViewModel @Inject constructor(private val reposProcessHolder: ReposPr
         obs.subscribe(intentsSubject)
     }
 
-    /*private fun compose(): Observable<ReposViewState> {
-       /* return intentsSubject.map { intent ->
+    private fun compose(): Observable<ReposViewState> {
+        return intentsSubject.map { intent ->
             convertToAction(intent)
         }.compose(reposProcessHolder.actionProcessor)
             .scan(ReposViewState.getDefault(), reducer)
-            .distinctUntilChanged()*/
-    }*/
+            .distinctUntilChanged()
+    }
 
-    //override fun states(): Observable<ReposViewState> = statesObs
-
-    override fun states(): Observable<ReposViewState> = Observable.just(ReposViewState.getDefault())
+    override fun states(): Observable<ReposViewState> = statesObs
 
     companion object {
 
@@ -57,7 +54,6 @@ class ReposViewModel @Inject constructor(private val reposProcessHolder: ReposPr
             return when (result) {
                 is LoadResposResult.Processing -> {
                     previousViewState.copy(isProcessing = true, data = null, error = null)
-
                 }
                 is LoadResposResult.Success -> {
                     previousViewState.copy(isProcessing = false, data = result.data, error = null)
@@ -67,7 +63,5 @@ class ReposViewModel @Inject constructor(private val reposProcessHolder: ReposPr
                 }
             }
         }
-
     }
-
 }

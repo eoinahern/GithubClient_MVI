@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.View
 import android.widget.LinearLayout.VERTICAL
 import androidx.core.view.isVisible
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -100,14 +102,15 @@ class ReposActivity : AppCompatActivity(), MviView<ReposIntent, ReposViewState> 
 
         progressbar.isVisible = state.isProcessing && !recycler.isVisible
 
-        if (!state.data.isNullOrEmpty()) {
+        if (state.data != null) {
             updateAdapter(state.data)
             recycler.isVisible = true
         }
     }
 
-    private fun updateAdapter(list: PagedList<RepoItem>) {
-        adapter.submitList(list)
-
+    private fun updateAdapter(list: LiveData<PagedList<RepoItem>>) {
+        list.observe(this, Observer {
+            adapter.submitList(it)
+        })
     }
 }

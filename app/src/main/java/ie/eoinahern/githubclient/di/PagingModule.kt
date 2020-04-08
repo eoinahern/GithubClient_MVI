@@ -18,41 +18,25 @@ class PagingModule {
 
     @Singleton
     @Provides
-    fun getConfig(): PagedList.Config.Builder {
-        val config = PagedList.Config.Builder()
-            .setPageSize(25)
-            .setEnablePlaceholders(false)
-
-        return config
-    }
+    fun getConfig(): PagedList.Config.Builder =
+        PagedList.Config.Builder().setPageSize(25).setEnablePlaceholders(false)
 
     @Singleton
     @Provides
     fun dataSourceFactory(api: GithubOauthApi): MyFactory = MyFactory(api)
-
-
-    @Singleton
-    @Provides
-    fun getBuilder(
-        dataSourceFactory: DataSource.Factory<Int, RepoItem>,
-        config: PagedList.Config.Builder
-    ): Observable<PagedList<RepoItem>> =
-        RxPagedListBuilder<Int, RepoItem>(dataSourceFactory, config.build()).buildObservable()
 
     class MyFactory constructor(private val api: GithubOauthApi) :
         DataSource.Factory<Int, RepoItem>() {
 
         private lateinit var key: String
 
-        override fun create(): DataSource<Int, RepoItem> {
-            val source = ReposDataSource(api)
-            source.setKey(this.key)
-            return source
-        }
 
+        @Synchronized
+        override fun create(): DataSource<Int, RepoItem> = ReposDataSource(api, key)
+
+        @Synchronized
         fun setKey(apiKey: String) {
             this.key = apiKey
         }
-
     }
 }

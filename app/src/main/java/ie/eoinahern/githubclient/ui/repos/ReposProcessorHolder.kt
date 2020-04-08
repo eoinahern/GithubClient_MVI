@@ -2,6 +2,7 @@ package ie.eoinahern.githubclient.ui.repos
 
 import android.util.Log
 import androidx.paging.DataSource
+import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import androidx.paging.RxPagedListBuilder
 import ie.eoinahern.githubclient.data.model.RepoItem
@@ -10,6 +11,8 @@ import ie.eoinahern.githubclient.di.PagingModule
 import ie.eoinahern.githubclient.util.schedulers.SchedulerProvider
 import io.reactivex.Observable
 import io.reactivex.ObservableTransformer
+import java.util.concurrent.Executor
+import java.util.concurrent.ThreadPoolExecutor
 import javax.inject.Inject
 
 
@@ -22,11 +25,15 @@ class ReposProcessorHolder @Inject constructor(
     private val loadReposProcessor =
         ObservableTransformer<ReposAction.LoadRepos, ReposResult.LoadResposResult> { actions ->
             actions.observeOn(schedulerProvider.getIOSchecduler())
-                .flatMap { action ->
-                    val item = createDataSourceWithKey(action.apiKey)
-                    item
+                .map { action ->
+
+                    dataSourceFactory.setKey(action.apiKey)
+                    val builtConfig = config.build()
+                    LivePagedListBuilder<Int, RepoItem>(
+                        dataSourceFactory, builtConfig
+                    ).build()
                 }
-                .map(ReposResult.LoadResposResult::Success)
+                .map { list -> ReposResult.LoadResposResult.Success(list) }
                 .cast(ReposResult.LoadResposResult::class.java)
                 .observeOn(schedulerProvider.getMainSchedulers())
                 .onErrorReturn { throwable ->
@@ -37,16 +44,6 @@ class ReposProcessorHolder @Inject constructor(
 
     internal val actionProcessor = ObservableTransformer<ReposAction, ReposResult> { actions ->
         actions.ofType(ReposAction.LoadRepos::class.java).compose(loadReposProcessor)
-    }
-
-    private fun createDataSourceWithKey(key: String): Observable<PagedList<RepoItem>> {
-
-        dataSourceFactory.setKey(key)
-
-        return RxPagedListBuilder<Int, RepoItem>(
-            dataSourceFactory,
-            config.build()
-        ).buildObservable()
     }
 
 }

@@ -6,7 +6,7 @@
     </shared>
   </component>
   <component name="AndroidLogFilters">
-    <option name="TOOL_WINDOW_LOG_LEVEL" value="debug" />
+    <option name="TOOL_WINDOW_LOG_LEVEL" value="error" />
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
   </component>
   <component name="ChangeListManager">
@@ -14,8 +14,11 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/eoinahern/githubclient/data/repos/ReposDataSource.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/eoinahern/githubclient/data/repos/ReposDataSource.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/eoinahern/githubclient/di/PagingModule.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/eoinahern/githubclient/di/PagingModule.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/eoinahern/githubclient/ui/repos/ReposDiffUtilCallback.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/eoinahern/githubclient/ui/repos/ReposDiffUtilCallback.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/eoinahern/githubclient/ui/repos/ReposActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/eoinahern/githubclient/ui/repos/ReposActivity.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/eoinahern/githubclient/ui/repos/ReposProcessorHolder.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/eoinahern/githubclient/ui/repos/ReposProcessorHolder.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/eoinahern/githubclient/ui/repos/ReposResult.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/eoinahern/githubclient/ui/repos/ReposResult.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/eoinahern/githubclient/ui/repos/ReposViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/eoinahern/githubclient/ui/repos/ReposViewModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/eoinahern/githubclient/ui/repos/ReposViewState.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/eoinahern/githubclient/ui/repos/ReposViewState.kt" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -23,7 +26,7 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="Nexus_9_API_26" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="KC8ASEOVO301009" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -86,7 +89,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Kotlin.ReposViewStateKt">
+  <component name="RunManager" selected="Android App.app">
     <configuration default="true" type="JUnit" factoryName="JUnit">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <module name="" />
@@ -305,9 +308,24 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/ie/eoinahern/githubclient/data/repos/ReposDataSource.kt</url>
+          <url>file://$PROJECT_DIR$/app/src/main/java/ie/eoinahern/githubclient/ui/repos/ReposViewModel.kt</url>
+          <line>58</line>
+          <option name="timeStamp" value="11" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/ie/eoinahern/githubclient/ui/repos/ReposViewModel.kt</url>
+          <line>61</line>
+          <option name="timeStamp" value="12" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/ie/eoinahern/githubclient/ui/repos/ReposViewModel.kt</url>
           <line>55</line>
-          <option name="timeStamp" value="2" />
+          <option name="timeStamp" value="27" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/ie/eoinahern/githubclient/ui/repos/ReposProcessorHolder.kt</url>
+          <line>39</line>
+          <option name="timeStamp" value="29" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

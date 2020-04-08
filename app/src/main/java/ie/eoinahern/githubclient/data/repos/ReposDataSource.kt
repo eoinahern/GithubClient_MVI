@@ -7,24 +7,19 @@ import ie.eoinahern.githubclient.data.model.RepoItem
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import javax.inject.Inject
 
-class ReposDataSource @Inject constructor(private val api: GithubOauthApi) :
+
+class ReposDataSource constructor(private val api: GithubOauthApi, val key: String) :
     PageKeyedDataSource<Int, RepoItem>() {
 
     private var pageNumber: Int = 1
-    private lateinit var apiKey: String
-
-    fun setKey(euIn: String) {
-        this.apiKey = euIn
-    }
 
     override fun loadInitial(
         params: LoadInitialParams<Int>,
         callback: LoadInitialCallback<Int, RepoItem>
     ) {
 
-        api.getRepos(apiKey, pageNumber, params.requestedLoadSize).enqueue(object :
+        api.getRepos(key, pageNumber, 25).enqueue(object :
             Callback<List<RepoItem>> {
 
             override fun onFailure(call: Call<List<RepoItem>>, t: Throwable) {
@@ -38,8 +33,8 @@ class ReposDataSource @Inject constructor(private val api: GithubOauthApi) :
             ) {
 
                 if (response.isSuccessful) {
-                    val list = response.body()
-                    callback.onResult(list as MutableList<RepoItem>, null, pageNumber + 1)
+                    val list = response.body() ?: listOf()
+                    callback.onResult(list, null, pageNumber + 1)
                 } else {
                     throw Exception("unsuccsessful request!!!  code : ${response.code()}")
                 }
@@ -51,9 +46,9 @@ class ReposDataSource @Inject constructor(private val api: GithubOauthApi) :
 
 
         val currentPage = params.key
-        val pageSize = params.requestedLoadSize
+        val pageSize = 25
 
-        api.getRepos(apiKey, currentPage, pageSize).enqueue(object :
+        api.getRepos(key, currentPage, pageSize).enqueue(object :
             Callback<List<RepoItem>> {
 
             override fun onFailure(call: Call<List<RepoItem>>, t: Throwable) {
@@ -67,8 +62,8 @@ class ReposDataSource @Inject constructor(private val api: GithubOauthApi) :
             ) {
 
                 if (response.isSuccessful) {
-                    val list = response.body()
-                    callback.onResult(list as MutableList<RepoItem>, currentPage + 1)
+                    val list = response.body() ?: listOf()
+                    callback.onResult(list, currentPage + 1)
                 } else {
                     throw Exception("unsucsessful request!!!  code : ${response.code()}")
                 }
@@ -77,7 +72,5 @@ class ReposDataSource @Inject constructor(private val api: GithubOauthApi) :
     }
 
     override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, RepoItem>) {
-        println("in load before?????")
     }
-
 }

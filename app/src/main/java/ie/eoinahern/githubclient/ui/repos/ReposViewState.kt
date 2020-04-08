@@ -1,5 +1,6 @@
 package ie.eoinahern.githubclient.ui.repos
 
+import androidx.lifecycle.LiveData
 import androidx.paging.PagedList
 import ie.eoinahern.githubclient.data.model.RepoItem
 import ie.eoinahern.githubclient.mvibase.MviViewState
@@ -7,7 +8,7 @@ import ie.eoinahern.githubclient.mvibase.MviViewState
 data class ReposViewState(
     val error: Throwable?,
     val isProcessing: Boolean,
-    val data: PagedList<RepoItem>?
+    val data: LiveData<PagedList<RepoItem>>?
 ) : MviViewState {
 
     companion object {
