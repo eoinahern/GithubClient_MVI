@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.LinearLayout.VERTICAL
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProviders
+import androidx.paging.PagedList
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import ie.eoinahern.githubclient.GithubApp
@@ -105,7 +106,8 @@ class ReposActivity : AppCompatActivity(), MviView<ReposIntent, ReposViewState> 
         }
     }
 
-    private fun updateAdapter(list: List<RepoItem>) {
-        adapter.updateAdapter(list)
+    private fun updateAdapter(list: PagedList<RepoItem>) {
+        adapter.submitList(list)
+
     }
 }

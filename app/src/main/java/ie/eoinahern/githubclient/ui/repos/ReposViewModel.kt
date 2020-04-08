@@ -54,7 +54,8 @@ class ReposViewModel @Inject constructor(private val reposProcessHolder: ReposPr
 
             return when (result) {
                 is LoadResposResult.Processing -> {
-                    previousViewState.copy(isProcessing = true, data = listOf(), error = null)
+                    previousViewState.copy(isProcessing = true, data = null, error = null)
+
                 }
                 is LoadResposResult.Success -> {
                     previousViewState.copy(isProcessing = false, data = result.data, error = null)

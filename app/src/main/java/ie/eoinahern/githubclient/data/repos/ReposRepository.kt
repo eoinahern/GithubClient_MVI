@@ -13,5 +13,5 @@ import javax.inject.Inject
 
 class ReposRepository @Inject constructor(private val api: GithubOauthApi) {
 
-    fun getReposList(apiKey: String): Observable<List<RepoItem>> = api.getRepos(apiKey)
+    fun getReposList(apiKey: String): Observable<List<RepoItem>> = api.getRepos(apiKey, 1, 25)
 }
