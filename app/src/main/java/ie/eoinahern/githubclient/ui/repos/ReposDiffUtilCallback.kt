@@ -8,11 +8,11 @@ import javax.inject.Inject
 class ReposDiffUtilCallback @Inject constructor() : DiffUtil.ItemCallback<RepoItem>() {
 
     override fun areItemsTheSame(oldItem: RepoItem, newItem: RepoItem): Boolean {
-        TODO("Not yet implemented")
+        return (oldItem.id == newItem.id)
     }
 
     override fun areContentsTheSame(oldItem: RepoItem, newItem: RepoItem): Boolean {
-        TODO("Not yet implemented")
+        return (oldItem.lastUpdate == oldItem.lastUpdate)
     }
 
 

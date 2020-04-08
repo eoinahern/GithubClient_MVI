@@ -1,6 +1,6 @@
 package ie.eoinahern.githubclient.data.repos
 
-import android.util.Log
+
 import androidx.paging.PageKeyedDataSource
 import ie.eoinahern.githubclient.data.GithubOauthApi
 import ie.eoinahern.githubclient.data.model.RepoItem

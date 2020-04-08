@@ -9,6 +9,7 @@ import dagger.Provides
 import ie.eoinahern.githubclient.data.GithubOauthApi
 import ie.eoinahern.githubclient.data.model.RepoItem
 import ie.eoinahern.githubclient.data.repos.ReposDataSource
+import io.reactivex.Observable
 import javax.inject.Singleton
 
 
@@ -27,20 +28,31 @@ class PagingModule {
 
     @Singleton
     @Provides
-    fun dataSourceFactory(api: GithubOauthApi): DataSource.Factory<Int, RepoItem> =
-        object : DataSource.Factory<Int, RepoItem>() {
-            override fun create(): DataSource<Int, RepoItem> {
-                return ReposDataSource(api)
-            }
-        }
+    fun dataSourceFactory(api: GithubOauthApi): MyFactory = MyFactory(api)
+
 
     @Singleton
     @Provides
     fun getBuilder(
         dataSourceFactory: DataSource.Factory<Int, RepoItem>,
         config: PagedList.Config.Builder
-    ): RxPagedListBuilder<Int, RepoItem> {
-        return RxPagedListBuilder<Int, RepoItem>(dataSourceFactory, config.build())
-    }
+    ): Observable<PagedList<RepoItem>> =
+        RxPagedListBuilder<Int, RepoItem>(dataSourceFactory, config.build()).buildObservable()
 
+    class MyFactory constructor(private val api: GithubOauthApi) :
+        DataSource.Factory<Int, RepoItem>() {
+
+        private lateinit var key: String
+
+        override fun create(): DataSource<Int, RepoItem> {
+            val source = ReposDataSource(api)
+            source.setKey(this.key)
+            return source
+        }
+
+        fun setKey(apiKey: String) {
+            this.key = apiKey
+        }
+
+    }
 }
