@@ -24,7 +24,6 @@ class ReposDataSource @Inject constructor(private val api: GithubOauthApi) :
         callback: LoadInitialCallback<Int, RepoItem>
     ) {
 
-
         api.getRepos(apiKey, pageNumber, params.requestedLoadSize).enqueue(object :
             Callback<List<RepoItem>> {
 

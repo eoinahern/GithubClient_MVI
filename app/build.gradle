@@ -57,6 +57,7 @@ dependencies {
     compileOnly 'javax.annotation:jsr250-api:1.0'
 
     implementation "android.arch.paging:runtime:$paging_version"
+    implementation "androidx.paging:paging-rxjava2:$paging_version"
 
     kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshi_version"
     implementation "com.squareup.moshi:moshi:$moshi_version"
