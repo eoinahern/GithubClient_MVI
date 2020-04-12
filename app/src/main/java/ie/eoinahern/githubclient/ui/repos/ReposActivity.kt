@@ -15,6 +15,7 @@ import ie.eoinahern.githubclient.GithubApp
 import ie.eoinahern.githubclient.R
 import ie.eoinahern.githubclient.data.model.RepoItem
 import ie.eoinahern.githubclient.mvibase.MviView
+import ie.eoinahern.githubclient.presenter.ReposPresenter
 import ie.eoinahern.githubclient.util.viewmodel.ViewModelCreationFactory
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
@@ -28,8 +29,8 @@ import javax.inject.Inject
 
 class ReposActivity : AppCompatActivity(), MviView<ReposIntent, ReposViewState> {
 
-    @Inject
-    lateinit var factory: ViewModelCreationFactory
+    //@Inject
+    //lateinit var factory: ViewModelCreationFactory
 
     @Inject
     lateinit var adapter: ReposActivityAdapter
@@ -38,7 +39,10 @@ class ReposActivity : AppCompatActivity(), MviView<ReposIntent, ReposViewState> 
 
     private val loadReposPublisher = BehaviorSubject.create<ReposIntent.LoadReposIntent>()
 
-    private lateinit var viewModel: ReposViewModel
+    //private lateinit var viewModel: ReposViewModel
+
+    @Inject
+    private lateinit var presenter: ReposPresenter
 
     private var key: String = ""
 
@@ -65,7 +69,7 @@ class ReposActivity : AppCompatActivity(), MviView<ReposIntent, ReposViewState> 
     }
 
     private fun setupViewModel() {
-        viewModel = ViewModelProviders.of(this, factory).get(ReposViewModel::class.java)
+        // viewModel = ViewModelProviders.of(this, factory).get(ReposViewModel::class.java)
     }
 
     private fun getApiKey() {
@@ -90,8 +94,8 @@ class ReposActivity : AppCompatActivity(), MviView<ReposIntent, ReposViewState> 
     }
 
     private fun bind() {
-        disposables += viewModel.states().subscribe { render(it) }
-        viewModel.processIntents(intents())
+        //disposables += viewModel.states().subscribe { render(it) }
+        //viewModel.processIntents(intents())
     }
 
     override fun intents(): Observable<ReposIntent> {

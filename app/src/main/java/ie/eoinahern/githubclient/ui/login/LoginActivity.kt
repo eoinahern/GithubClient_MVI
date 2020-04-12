@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProviders
 import ie.eoinahern.githubclient.GithubApp
 import ie.eoinahern.githubclient.R
 import ie.eoinahern.githubclient.mvibase.MviView
+import ie.eoinahern.githubclient.presenter.LoginPresenter
 import ie.eoinahern.githubclient.ui.repos.ReposActivity
 import ie.eoinahern.githubclient.util.constants.CALLBACK_URL
 import ie.eoinahern.githubclient.util.constants.CLIENT_ID
@@ -40,10 +41,14 @@ class LoginActivity : AppCompatActivity(), MviView<LoginIntent, LoginViewState> 
     private val checkHaveKeyPublisher: PublishSubject<LoginIntent.CheckHasKey> =
         PublishSubject.create()
 
-    private lateinit var loginViewModel: LoginViewModel
+    //private lateinit var loginViewModel: LoginViewModel
+
+    //@Inject
+    //lateinit var factory: ViewModelCreationFactory
+
 
     @Inject
-    lateinit var factory: ViewModelCreationFactory
+    lateinit var presenter: LoginPresenter
 
     private val disposables = CompositeDisposable()
 
@@ -61,7 +66,7 @@ class LoginActivity : AppCompatActivity(), MviView<LoginIntent, LoginViewState> 
     }
 
     private fun createViewModel() {
-        loginViewModel = ViewModelProviders.of(this, factory).get(LoginViewModel::class.java)
+        //loginViewModel = ViewModelProviders.of(this, factory).get(LoginViewModel::class.java)
     }
 
     private fun loginUser() {
@@ -164,8 +169,8 @@ class LoginActivity : AppCompatActivity(), MviView<LoginIntent, LoginViewState> 
     }
 
     private fun bind() {
-        disposables += loginViewModel.states().subscribe { viewState -> render(viewState) }
-        loginViewModel.processIntents(intents())
+        //disposables += loginViewModel.states().subscribe { viewState -> render(viewState) }
+        //loginViewModel.processIntents(intents())
     }
 }
 
