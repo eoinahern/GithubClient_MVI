@@ -33,18 +33,13 @@ import kotlinx.android.synthetic.main.activity_login.*
 import java.nio.charset.Charset
 import javax.inject.Inject
 
-class LoginActivity : AppCompatActivity(), MviView<LoginIntent, LoginViewState> {
+class LoginActivity : AppCompatActivity(), LoginView {
 
     private val authUserPublisher =
         PublishSubject.create<LoginIntent.AuthUserIntent>()
 
     private val checkHaveKeyPublisher: PublishSubject<LoginIntent.CheckHasKey> =
         PublishSubject.create()
-
-    //private lateinit var loginViewModel: LoginViewModel
-
-    //@Inject
-    //lateinit var factory: ViewModelCreationFactory
 
 
     @Inject
@@ -58,15 +53,9 @@ class LoginActivity : AppCompatActivity(), MviView<LoginIntent, LoginViewState> 
 
         (application as GithubApp).getAppComponent().inject(this)
 
-        createViewModel()
-
         loginButton.setOnClickListener {
             loginUser()
         }
-    }
-
-    private fun createViewModel() {
-        //loginViewModel = ViewModelProviders.of(this, factory).get(LoginViewModel::class.java)
     }
 
     private fun loginUser() {
@@ -129,11 +118,15 @@ class LoginActivity : AppCompatActivity(), MviView<LoginIntent, LoginViewState> 
         checkHaveKeyPublisher.onNext(LoginIntent.CheckHasKey)
     }
 
-    override fun intents(): Observable<LoginIntent> {
+    /*override fun intents(): Observable<LoginIntent> {
         return Observable.merge(
             getAuthUserIntent(),
             getCheckHasKey()
         ).cast(LoginIntent::class.java)
+    }*/
+
+    override fun loginIntent(): Observable<String> {
+        TODO("Not yet implemented")
     }
 
     /**
@@ -160,7 +153,7 @@ class LoginActivity : AppCompatActivity(), MviView<LoginIntent, LoginViewState> 
 
     override fun onStart() {
         super.onStart()
-        bind()
+        //bind()
     }
 
     override fun onStop() {
@@ -168,9 +161,9 @@ class LoginActivity : AppCompatActivity(), MviView<LoginIntent, LoginViewState> 
         disposables.clear()
     }
 
-    private fun bind() {
+    /*private fun bind() {
         //disposables += loginViewModel.states().subscribe { viewState -> render(viewState) }
         //loginViewModel.processIntents(intents())
-    }
+    }*/
 }
 
