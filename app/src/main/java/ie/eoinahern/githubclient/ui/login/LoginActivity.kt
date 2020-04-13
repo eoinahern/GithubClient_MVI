@@ -44,8 +44,6 @@ class LoginActivity : AppCompatActivity(), LoginView {
     @Inject
     lateinit var presenter: LoginPresenter
 
-    private val disposables = CompositeDisposable()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
