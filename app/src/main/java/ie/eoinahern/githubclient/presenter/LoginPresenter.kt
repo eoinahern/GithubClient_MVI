@@ -3,7 +3,6 @@ package ie.eoinahern.githubclient.presenter
 import ie.eoinahern.githubclient.data.LoginInteractor
 import ie.eoinahern.githubclient.ui.login.LoginScreenViewState
 import ie.eoinahern.githubclient.ui.login.LoginView
-import ie.eoinahern.githubclient.ui.login.LoginViewState
 import ie.eoinahern.githubclient.util.schedulers.SchedulerProvider
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
