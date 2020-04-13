@@ -21,3 +21,9 @@ data class ReposViewState(
         }
     }
 }
+
+sealed class ReposUpdatedViewState {
+    data class Error(val error: Throwable?) : ReposUpdatedViewState()
+    object IsProcessing : ReposUpdatedViewState()
+    data class Complete(val data: PagedList<RepoItem>) : ReposUpdatedViewState()
+}

@@ -27,10 +27,7 @@ import kotlinx.android.synthetic.main.activity_repos.*
 import javax.inject.Inject
 
 
-class ReposActivity : AppCompatActivity(), MviView<ReposIntent, ReposViewState> {
-
-    //@Inject
-    //lateinit var factory: ViewModelCreationFactory
+class ReposActivity : AppCompatActivity(), ReposView {
 
     @Inject
     lateinit var adapter: ReposActivityAdapter
@@ -38,8 +35,6 @@ class ReposActivity : AppCompatActivity(), MviView<ReposIntent, ReposViewState> 
     private val disposables = CompositeDisposable()
 
     private val loadReposPublisher = BehaviorSubject.create<ReposIntent.LoadReposIntent>()
-
-    //private lateinit var viewModel: ReposViewModel
 
     @Inject
     lateinit var presenter: ReposPresenter
@@ -52,8 +47,8 @@ class ReposActivity : AppCompatActivity(), MviView<ReposIntent, ReposViewState> 
         setUpToolbar()
         (application as GithubApp).getAppComponent().inject(this)
         setUpAdapter()
-        setupViewModel()
         getApiKey()
+        presenter.setView(this)
         loadRepos()
     }
 
@@ -68,25 +63,21 @@ class ReposActivity : AppCompatActivity(), MviView<ReposIntent, ReposViewState> 
         recycler.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
     }
 
-    private fun setupViewModel() {
-        // viewModel = ViewModelProviders.of(this, factory).get(ReposViewModel::class.java)
-    }
-
     private fun getApiKey() {
         key = intent.getStringExtra("key") ?: ""
     }
 
-    private fun loadRepos() {
+    /*private fun loadRepos() {
         loadReposPublisher.onNext(ReposIntent.LoadReposIntent("token ".plus(key)))
-    }
+    }*/
 
     private fun getLoadReposObservable(): Observable<ReposIntent.LoadReposIntent> =
         loadReposPublisher
 
-    override fun onStart() {
+    /*override fun onStart() {
         super.onStart()
         bind()
-    }
+    }*/
 
     override fun onStop() {
         super.onStop()
@@ -98,11 +89,11 @@ class ReposActivity : AppCompatActivity(), MviView<ReposIntent, ReposViewState> 
         //viewModel.processIntents(intents())
     }
 
-    override fun intents(): Observable<ReposIntent> {
+    /*override fun intents(): Observable<ReposIntent> {
         return getLoadReposObservable().cast(ReposIntent::class.java)
-    }
+    }*/
 
-    override fun render(state: ReposViewState) {
+    /*override fun render(state: ReposViewState) {
 
         progressbar.isVisible = state.isProcessing && !recycler.isVisible
 
@@ -110,11 +101,19 @@ class ReposActivity : AppCompatActivity(), MviView<ReposIntent, ReposViewState> 
             updateAdapter(state.data)
             recycler.isVisible = true
         }
-    }
+    }*/
 
     private fun updateAdapter(list: LiveData<PagedList<RepoItem>>) {
         list.observe(this, Observer {
             adapter.submitList(it)
         })
+    }
+
+    override fun render(viewState: ReposUpdatedViewState) {
+        TODO("Not yet implemented")
+    }
+
+    override fun loadRepos(): Observable<String> {
+        TODO("Not yet implemented")
     }
 }
