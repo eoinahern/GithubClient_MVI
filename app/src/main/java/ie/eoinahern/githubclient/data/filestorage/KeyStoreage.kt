@@ -31,15 +31,14 @@ class KeyStorage @Inject constructor(
 
     private fun getKeyFromPrefs(): String {
         val encryptedKey = sharedPreferences.getString(GITHUB_TOKEN_KEY, "")
-        val decoded = Base64.decode(encryptedKey, Base64.NO_WRAP)
-        val bytes = encryptionUtil.decrypt(decoded)
-        val decrypted = String(bytes, Charsets.UTF_8)
 
-        if (decrypted.isEmpty()) {
+        if (encryptedKey.isNullOrEmpty()) {
             throw IllegalArgumentException("empty key")
         }
 
-        return decrypted
+        val decoded = Base64.decode(encryptedKey, Base64.NO_WRAP)
+        val bytes = encryptionUtil.decrypt(decoded)
+        return String(bytes, Charsets.UTF_8)
     }
 
     fun checkHasLocalToken(): Observable<String> {

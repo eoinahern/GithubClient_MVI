@@ -42,7 +42,7 @@ class ReposActivity : AppCompatActivity(), MviView<ReposIntent, ReposViewState> 
     //private lateinit var viewModel: ReposViewModel
 
     @Inject
-    private lateinit var presenter: ReposPresenter
+    lateinit var presenter: ReposPresenter
 
     private var key: String = ""
 

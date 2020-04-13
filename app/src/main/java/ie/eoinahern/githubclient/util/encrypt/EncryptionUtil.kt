@@ -10,10 +10,11 @@ import javax.crypto.KeyGenerator
 import javax.crypto.SecretKey
 import javax.crypto.spec.GCMParameterSpec
 import javax.inject.Inject
+import javax.inject.Singleton
 
 private const val IV_KEY = "iv"
 
-
+@Singleton
 class EncryptionUtil @Inject constructor(
     private val keyGenerator: KeyGenerator,
     private val keyGenParameterSpec: KeyGenParameterSpec,

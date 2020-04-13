@@ -2,9 +2,9 @@ package ie.eoinahern.githubclient.data
 
 import ie.eoinahern.githubclient.data.filestorage.KeyStorage
 import ie.eoinahern.githubclient.ui.login.LoginScreenViewState
-import ie.eoinahern.githubclient.ui.login.LoginViewState
 import ie.eoinahern.githubclient.util.constants.CLIENT_ID
 import ie.eoinahern.githubclient.util.constants.CLIENT_SECRET
+import ie.eoinahern.githubclient.util.constants.TOKEN_PREFIX
 import io.reactivex.Observable
 import javax.inject.Inject
 
@@ -15,7 +15,7 @@ class LoginInteractor @Inject constructor(
 ) {
 
     fun loginUserGetKeyFromWeb(key: String): Observable<LoginScreenViewState> {
-        return api.getAuthToken(key, CLIENT_SECRET, CLIENT_ID, "")
+        return api.getAuthToken(CLIENT_ID, CLIENT_SECRET, key, TOKEN_PREFIX.plus(key))
             .map {
                 keyStorage.saveUserToken(it.accessToken)
                 LoginScreenViewState.CompleteState(it.accessToken)
@@ -34,8 +34,5 @@ class LoginInteractor @Inject constructor(
         return keyStorage.checkHasLocalToken().map {
             LoginScreenViewState.CompleteState(it)
         }.cast(LoginScreenViewState::class.java)
-            .onErrorReturn {
-                LoginScreenViewState.IntermediateState
-            }
     }
 }

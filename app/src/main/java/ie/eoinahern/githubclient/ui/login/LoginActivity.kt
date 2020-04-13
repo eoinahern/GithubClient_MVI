@@ -115,48 +115,28 @@ class LoginActivity : AppCompatActivity(), LoginView {
         checkHaveKeyPublisher.onNext(Unit)
     }
 
-    /*override fun intents(): Observable<LoginIntent> {
-        return Observable.merge(
-            getAuthUserIntent(),
-            getCheckHasKey()
-        ).cast(LoginIntent::class.java)
-    }*/
-
     override fun loginIntent(): Observable<String> {
         return authUserPublisher
     }
 
     override fun render(state: LoginScreenViewState) {
 
-
         when (state) {
             is LoginScreenViewState.ProgressState -> {
-
+                showLoading()
             }
             is LoginScreenViewState.IntermediateState -> {
-
+                hideLoading()
+                loginButton.isVisible = true
             }
             is LoginScreenViewState.FailureState -> {
-
+                // show message error
             }
             is LoginScreenViewState.CompleteState -> {
-
+                hideLoading()
+                goToNext(state.key)
             }
         }
-
-        /*if (state.isProcessing) showLoading() else hideLoading()
-
-        state.generalFail?.let { error ->
-            setErrorMessage(error.message ?: "error Loading")
-        } ?: setErrorMessage("")
-
-        if (state.visibleLoginButton) {
-            loginButton.isVisible = true
-        }
-
-        if (state.loginComplete && !state.key.isNullOrEmpty()) {
-            goToNext(state.key)
-        }*/
     }
 
     override fun onStop() {

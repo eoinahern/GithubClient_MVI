@@ -1,6 +1,7 @@
 package ie.eoinahern.githubclient.presenter
 
 import ie.eoinahern.githubclient.data.LoginInteractor
+import ie.eoinahern.githubclient.ui.login.LoginScreenViewState
 import ie.eoinahern.githubclient.ui.login.LoginView
 import ie.eoinahern.githubclient.ui.login.LoginViewState
 import ie.eoinahern.githubclient.util.schedulers.SchedulerProvider
@@ -20,16 +21,21 @@ class LoginPresenter @Inject constructor(
     fun setView(loginView: LoginView) {
         view = loginView
         disposables += observeCheckHasKey()
-        disposables += observeCheckHasKey()
+        disposables += observeLoginUser()
     }
 
+    private fun observeLoginUser() = view.loginIntent()
+        .observeOn(schedulerProvider.getIOSchecduler())
+        .flatMap { loginInteractor.loginUserGetKeyFromWeb(it) }
+        .observeOn(schedulerProvider.getIOSchecduler())
+        .subscribe { view.render(it) }
 
-    fun observeLoginUser() = view.loginIntent()
-
-    fun observeCheckHasKey() = view.getCheckHasKey()
+    private fun observeCheckHasKey() = view.getCheckHasKey()
         .observeOn(schedulerProvider.getIOSchecduler())
         .flatMap { loginInteractor.getLocalSavedKey() }
         .observeOn(schedulerProvider.getMainSchedulers())
+        .onErrorReturn { LoginScreenViewState.IntermediateState }
+        .startWith(LoginScreenViewState.ProgressState)
         .subscribe { view.render(it) }
 
 
