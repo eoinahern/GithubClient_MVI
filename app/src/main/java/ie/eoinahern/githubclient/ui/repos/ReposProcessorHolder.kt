@@ -16,7 +16,7 @@ import java.util.concurrent.ThreadPoolExecutor
 import javax.inject.Inject
 
 
-class ReposProcessorHolder @Inject constructor(
+/*class ReposProcessorHolder @Inject constructor(
     private val schedulerProvider: SchedulerProvider,
     private val dataSourceFactory: PagingModule.MyFactory,
     private val config: PagedList.Config.Builder
@@ -46,4 +46,4 @@ class ReposProcessorHolder @Inject constructor(
         actions.ofType(ReposAction.LoadRepos::class.java).compose(loadReposProcessor)
     }
 
-}
+}*/

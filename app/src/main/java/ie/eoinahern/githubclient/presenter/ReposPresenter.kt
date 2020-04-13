@@ -1,6 +1,7 @@
 package ie.eoinahern.githubclient.presenter
 
 import ie.eoinahern.githubclient.data.ReposInteractor
+import ie.eoinahern.githubclient.ui.repos.ReposUpdatedViewState
 import ie.eoinahern.githubclient.ui.repos.ReposView
 import ie.eoinahern.githubclient.util.schedulers.SchedulerProvider
 import io.reactivex.disposables.CompositeDisposable
@@ -21,10 +22,12 @@ class ReposPresenter @Inject constructor(
         disposables += getRepos()
     }
 
-    fun getRepos() = view.loadRepos()
+    private fun getRepos() = view.loadRepos()
         .observeOn(schedulerProvider.getIOSchecduler())
-        .flatMap { reposInteractor.getRepos() }
+        .flatMap(reposInteractor::getRepos)
+        .onErrorReturn(ReposUpdatedViewState::Error)
         .observeOn(schedulerProvider.getMainSchedulers())
+        .startWith(ReposUpdatedViewState.IsProcessing)
         .subscribe { view.render(it) }
 
     fun unbind() {

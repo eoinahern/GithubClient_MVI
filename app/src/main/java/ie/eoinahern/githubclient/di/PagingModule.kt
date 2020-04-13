@@ -1,16 +1,11 @@
 package ie.eoinahern.githubclient.di
 
 
-import androidx.paging.DataSource
 import androidx.paging.PagedList
-import androidx.paging.RxPagedListBuilder
 import dagger.Module
 import dagger.Provides
 import ie.eoinahern.githubclient.data.GithubOauthApi
 import ie.eoinahern.githubclient.data.ReposDataSourceFactory
-import ie.eoinahern.githubclient.data.model.RepoItem
-import ie.eoinahern.githubclient.data.repos.ReposDataSource
-import io.reactivex.Observable
 import javax.inject.Singleton
 
 
