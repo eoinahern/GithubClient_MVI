@@ -1,6 +1,7 @@
 package ie.eoinahern.githubclient.data
 
 import ie.eoinahern.githubclient.data.filestorage.KeyStorage
+import ie.eoinahern.githubclient.ui.login.LoginScreenViewState
 import ie.eoinahern.githubclient.ui.login.LoginViewState
 import ie.eoinahern.githubclient.util.constants.CLIENT_ID
 import ie.eoinahern.githubclient.util.constants.CLIENT_SECRET
@@ -13,12 +14,14 @@ class LoginInteractor @Inject constructor(
     private val keyStorage: KeyStorage
 ) {
 
-    fun loginUserGetKeyFromWeb(key: String): Observable<LoginViewState> {
+    fun loginUserGetKeyFromWeb(key: String): Observable<LoginScreenViewState> {
         return api.getAuthToken(key, CLIENT_SECRET, CLIENT_ID, "")
             .map {
-                LoginViewState.getInitState()
-                    .copy(key = it.accessToken, isProcessing = false, loginComplete = true)
-            }.onErrorReturn { LoginViewState.getInitState().copy(false, generalFail = it) }
+                keyStorage.saveUserToken(it.accessToken)
+                LoginScreenViewState.CompleteState(it.accessToken)
+            }
+            .cast(LoginScreenViewState::class.java)
+            .onErrorReturn { LoginScreenViewState.FailureState(it) }
     }
 
     /**
@@ -27,11 +30,12 @@ class LoginInteractor @Inject constructor(
      *
      */
 
-    fun getLocalSavedKey(): Observable<LoginViewState> {
+    fun getLocalSavedKey(): Observable<LoginScreenViewState> {
         return keyStorage.checkHasLocalToken().map {
-            LoginViewState.getInitState().copy(false, generalFail = null, key = it)
-        }.onErrorReturn {
-            LoginViewState.getInitState().copy(false, generalFail = it, visibleLoginButton = true)
-        }
+            LoginScreenViewState.CompleteState(it)
+        }.cast(LoginScreenViewState::class.java)
+            .onErrorReturn {
+                LoginScreenViewState.IntermediateState
+            }
     }
 }

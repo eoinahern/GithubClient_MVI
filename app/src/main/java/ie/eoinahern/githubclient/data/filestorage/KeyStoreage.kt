@@ -20,7 +20,7 @@ class KeyStorage @Inject constructor(
     private val encryptionUtil: EncryptionUtil
 ) {
 
-    private fun saveUserToken(token: String) {
+    fun saveUserToken(token: String) {
         val encryptedToken = encryptionUtil.encrypt(token.toByteArray(Charset.defaultCharset()))
         val encryptedString = Base64.encodeToString(encryptedToken, Base64.NO_WRAP)
         sharedPrefsEdit.putString(
