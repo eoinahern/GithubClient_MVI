@@ -32,9 +32,7 @@ class ReposActivity : AppCompatActivity(), ReposView {
     @Inject
     lateinit var adapter: ReposActivityAdapter
 
-    private val disposables = CompositeDisposable()
-
-    private val loadReposPublisher = BehaviorSubject.create<ReposIntent.LoadReposIntent>()
+    private val loadReposPublisher = BehaviorSubject.create<String>()
 
     @Inject
     lateinit var presenter: ReposPresenter
@@ -49,7 +47,7 @@ class ReposActivity : AppCompatActivity(), ReposView {
         setUpAdapter()
         getApiKey()
         presenter.setView(this)
-        loadRepos()
+        sendLoadReposRequest()
     }
 
     private fun setUpToolbar() {
@@ -67,41 +65,14 @@ class ReposActivity : AppCompatActivity(), ReposView {
         key = intent.getStringExtra("key") ?: ""
     }
 
-    /*private fun loadRepos() {
-        loadReposPublisher.onNext(ReposIntent.LoadReposIntent("token ".plus(key)))
-    }*/
-
-    private fun getLoadReposObservable(): Observable<ReposIntent.LoadReposIntent> =
-        loadReposPublisher
-
-    /*override fun onStart() {
-        super.onStart()
-        bind()
-    }*/
+    private fun sendLoadReposRequest() {
+        loadReposPublisher.onNext("token ".plus(key))
+    }
 
     override fun onStop() {
         super.onStop()
-        disposables.clear()
+        presenter.unbind()
     }
-
-    private fun bind() {
-        //disposables += viewModel.states().subscribe { render(it) }
-        //viewModel.processIntents(intents())
-    }
-
-    /*override fun intents(): Observable<ReposIntent> {
-        return getLoadReposObservable().cast(ReposIntent::class.java)
-    }*/
-
-    /*override fun render(state: ReposViewState) {
-
-        progressbar.isVisible = state.isProcessing && !recycler.isVisible
-
-        if (state.data != null) {
-            updateAdapter(state.data)
-            recycler.isVisible = true
-        }
-    }*/
 
     private fun updateAdapter(list: LiveData<PagedList<RepoItem>>) {
         list.observe(this, Observer {
@@ -110,10 +81,28 @@ class ReposActivity : AppCompatActivity(), ReposView {
     }
 
     override fun render(viewState: ReposUpdatedViewState) {
-        TODO("Not yet implemented")
+        when (viewState) {
+            is ReposUpdatedViewState.Error -> {
+                //error not setup yet!
+            }
+
+            is ReposUpdatedViewState.Complete -> {
+                showGitRepos(viewState.data)
+            }
+            is ReposUpdatedViewState.IsProcessing -> {
+                progressbar.isVisible = !recycler.isVisible
+            }
+        }
+    }
+
+    private fun showGitRepos(list: PagedList<RepoItem>) {
+        if (!list.isNullOrEmpty()) {
+            adapter.submitList(list)
+            recycler.isVisible = true
+        }
     }
 
     override fun loadRepos(): Observable<String> {
-        TODO("Not yet implemented")
+        return loadReposPublisher
     }
 }

@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
-import ie.eoinahern.githubclient.ui.login.LoginViewModel
 import ie.eoinahern.githubclient.ui.repos.ReposViewModel
 
 @Module
