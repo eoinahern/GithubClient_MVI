@@ -79,12 +79,7 @@ class LoginActivity : AppCompatActivity(), LoginView {
         }
     }
 
-    private fun getAuthUserIntent(): Observable<String> {
-        return authUserPublisher
-    }
-
     override fun getCheckHasKey(): Observable<Unit> = checkHaveKeyPublisher
-
 
     private fun showLoading() {
         loadingLayout.isVisible = true
@@ -130,7 +125,8 @@ class LoginActivity : AppCompatActivity(), LoginView {
                 loginButton.isVisible = true
             }
             is LoginScreenViewState.FailureState -> {
-                // show message error
+                hideLoading()
+                setErrorMessage("error on Login!")
             }
             is LoginScreenViewState.CompleteState -> {
                 hideLoading()
