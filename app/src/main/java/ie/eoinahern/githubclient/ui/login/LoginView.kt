@@ -5,4 +5,5 @@ import io.reactivex.Observable
 interface LoginView {
     fun render(view: LoginViewState)
     fun loginIntent(): Observable<String>
+    fun getCheckHasKey(): Observable<Unit>
 }

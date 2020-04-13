@@ -36,11 +36,10 @@ import javax.inject.Inject
 class LoginActivity : AppCompatActivity(), LoginView {
 
     private val authUserPublisher =
-        PublishSubject.create<LoginIntent.AuthUserIntent>()
+        PublishSubject.create<String>()
 
-    private val checkHaveKeyPublisher: PublishSubject<LoginIntent.CheckHasKey> =
+    private val checkHaveKeyPublisher: PublishSubject<Unit> =
         PublishSubject.create()
-
 
     @Inject
     lateinit var presenter: LoginPresenter
@@ -56,6 +55,8 @@ class LoginActivity : AppCompatActivity(), LoginView {
         loginButton.setOnClickListener {
             loginUser()
         }
+
+        presenter.setView(this)
     }
 
     private fun loginUser() {
@@ -76,17 +77,16 @@ class LoginActivity : AppCompatActivity(), LoginView {
 
         if (uri != null && uri.toString().startsWith(CALLBACK_URL)) {
             val code = uri.getQueryParameter("code") ?: ""
-            authUserPublisher.onNext(LoginIntent.AuthUserIntent(code))
+            authUserPublisher.onNext(code)
         }
     }
 
-    private fun getAuthUserIntent(): Observable<LoginIntent.AuthUserIntent> {
+    private fun getAuthUserIntent(): Observable<String> {
         return authUserPublisher
     }
 
-    private fun getCheckHasKey(): Observable<LoginIntent.CheckHasKey> {
-        return checkHaveKeyPublisher
-    }
+    override fun getCheckHasKey(): Observable<Unit> = checkHaveKeyPublisher
+
 
     private fun showLoading() {
         loadingLayout.isVisible = true
@@ -104,18 +104,17 @@ class LoginActivity : AppCompatActivity(), LoginView {
         val intent = Intent(this, ReposActivity::class.java)
         intent.putExtra("key", key)
         startActivity(intent)
-
         finish()
     }
 
     override fun onResume() {
         super.onResume()
-        checkUserHasKey()
+        checkHasLoginKey()
         parseCallback()
     }
 
-    private fun checkUserHasKey() {
-        checkHaveKeyPublisher.onNext(LoginIntent.CheckHasKey)
+    private fun checkHasLoginKey() {
+        checkHaveKeyPublisher.onNext(Unit)
     }
 
     /*override fun intents(): Observable<LoginIntent> {
@@ -126,13 +125,8 @@ class LoginActivity : AppCompatActivity(), LoginView {
     }*/
 
     override fun loginIntent(): Observable<String> {
-        TODO("Not yet implemented")
+        return authUserPublisher
     }
-
-    /**
-     * could model as sealed class. then we lose immutability
-     * and create a new sealed class element each call?
-     */
 
     override fun render(state: LoginViewState) {
 
@@ -151,19 +145,9 @@ class LoginActivity : AppCompatActivity(), LoginView {
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-        //bind()
-    }
-
     override fun onStop() {
         super.onStop()
-        disposables.clear()
+        presenter.unbind()
     }
-
-    /*private fun bind() {
-        //disposables += loginViewModel.states().subscribe { viewState -> render(viewState) }
-        //loginViewModel.processIntents(intents())
-    }*/
 }
 
