@@ -126,9 +126,25 @@ class LoginActivity : AppCompatActivity(), LoginView {
         return authUserPublisher
     }
 
-    override fun render(state: LoginViewState) {
+    override fun render(state: LoginScreenViewState) {
 
-        if (state.isProcessing) showLoading() else hideLoading()
+
+        when (state) {
+            is LoginScreenViewState.ProgressState -> {
+
+            }
+            is LoginScreenViewState.IntermediateState -> {
+
+            }
+            is LoginScreenViewState.FailureState -> {
+
+            }
+            is LoginScreenViewState.CompleteState -> {
+
+            }
+        }
+
+        /*if (state.isProcessing) showLoading() else hideLoading()
 
         state.generalFail?.let { error ->
             setErrorMessage(error.message ?: "error Loading")
@@ -140,7 +156,7 @@ class LoginActivity : AppCompatActivity(), LoginView {
 
         if (state.loginComplete && !state.key.isNullOrEmpty()) {
             goToNext(state.key)
-        }
+        }*/
     }
 
     override fun onStop() {

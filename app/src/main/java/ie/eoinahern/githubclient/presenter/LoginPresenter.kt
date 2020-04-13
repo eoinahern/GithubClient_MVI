@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 
 class LoginPresenter @Inject constructor(
-    private val LoginInteractor: LoginInteractor,
+    private val loginInteractor: LoginInteractor,
     private val schedulerProvider: SchedulerProvider
 ) {
 
@@ -19,7 +19,6 @@ class LoginPresenter @Inject constructor(
 
     fun setView(loginView: LoginView) {
         view = loginView
-
         disposables += observeCheckHasKey()
         disposables += observeCheckHasKey()
     }
@@ -29,9 +28,9 @@ class LoginPresenter @Inject constructor(
 
     fun observeCheckHasKey() = view.getCheckHasKey()
         .observeOn(schedulerProvider.getIOSchecduler())
-        .map { }
+        .flatMap { loginInteractor.getLocalSavedKey() }
         .observeOn(schedulerProvider.getMainSchedulers())
-        .subscribe { view.render(LoginViewState.getInitState()) }
+        .subscribe { view.render(it) }
 
 
     fun unbind() {
