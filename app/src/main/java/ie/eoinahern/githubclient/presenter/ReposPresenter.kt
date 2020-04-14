@@ -6,12 +6,12 @@ import ie.eoinahern.githubclient.ui.repos.ReposView
 import ie.eoinahern.githubclient.util.schedulers.SchedulerProvider
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
+import io.reactivex.rxkotlin.subscribeBy
 import javax.inject.Inject
 
 
 class ReposPresenter @Inject constructor(
-    private val reposInteractor: ReposInteractor,
-    private val schedulerProvider: SchedulerProvider
+    private val reposInteractor: ReposInteractor
 ) {
 
     private val disposables = CompositeDisposable()
@@ -23,15 +23,18 @@ class ReposPresenter @Inject constructor(
     }
 
     private fun getRepos() = view.loadRepos()
-        .observeOn(schedulerProvider.getIOSchecduler())
         .flatMap(reposInteractor::getRepos)
-        .onErrorReturn(ReposUpdatedViewState::Error)
-        .observeOn(schedulerProvider.getMainSchedulers())
-        .startWith(ReposUpdatedViewState.IsProcessing)
-        .subscribe { view.render(it) }
+        .map(ReposUpdatedViewState::Complete)
+        .subscribeBy(
+            onNext = { state ->
+                view.render(state)
+            }
+            , onError = { throwable ->
+                view.render(ReposUpdatedViewState.Error(throwable))
+            })
+
 
     fun unbind() {
         disposables.clear()
     }
-
 }

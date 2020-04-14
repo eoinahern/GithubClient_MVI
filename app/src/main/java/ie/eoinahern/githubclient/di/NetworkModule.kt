@@ -32,7 +32,6 @@ class NetworkModule {
         return Retrofit.Builder()
             .baseUrl(GITHUB_OAUTH_URL)
             .addConverterFactory(MoshiConverterFactory.create())
-            //.addCallAdapterFactory(RxJava2CallAdapterFactory.create()) //removed to allow paging lib to retrieve data
             .build().create(GithubOauthApi::class.java)
     }
 }

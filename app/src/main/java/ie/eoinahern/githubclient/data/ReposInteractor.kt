@@ -1,10 +1,8 @@
 package ie.eoinahern.githubclient.data
 
-import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import androidx.paging.RxPagedListBuilder
 import ie.eoinahern.githubclient.data.model.RepoItem
-import ie.eoinahern.githubclient.ui.repos.ReposUpdatedViewState
 import io.reactivex.Observable
 import javax.inject.Inject
 
@@ -14,13 +12,11 @@ class ReposInteractor @Inject constructor(
     private val config: PagedList.Config.Builder
 ) {
 
-    fun getRepos(key: String): Observable<ReposUpdatedViewState> {
+    fun getRepos(key: String): Observable<PagedList<RepoItem>> {
         dataSourceFactory.setKey(key)
         val builtConfig = config.build()
-
         return RxPagedListBuilder<Int, RepoItem>(
             dataSourceFactory, builtConfig
-        ).buildObservable().map { item -> ReposUpdatedViewState.Complete(item) }
-            .cast(ReposUpdatedViewState::class.java)
+        ).buildObservable()
     }
 }

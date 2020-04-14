@@ -83,10 +83,11 @@ class ReposActivity : AppCompatActivity(), ReposView {
     override fun render(viewState: ReposUpdatedViewState) {
         when (viewState) {
             is ReposUpdatedViewState.Error -> {
-                //error not setup yet!
+                println(viewState.error?.message)
             }
 
             is ReposUpdatedViewState.Complete -> {
+                progressbar.isVisible = false
                 showGitRepos(viewState.data)
             }
             is ReposUpdatedViewState.IsProcessing -> {
@@ -96,10 +97,8 @@ class ReposActivity : AppCompatActivity(), ReposView {
     }
 
     private fun showGitRepos(list: PagedList<RepoItem>) {
-        if (!list.isNullOrEmpty()) {
-            adapter.submitList(list)
-            recycler.isVisible = true
-        }
+        adapter.submitList(list)
+        recycler.isVisible = true
     }
 
     override fun loadRepos(): Observable<String> {

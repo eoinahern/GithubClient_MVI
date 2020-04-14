@@ -1,20 +1,13 @@
 package ie.eoinahern.githubclient.ui.repos
 
 import androidx.lifecycle.ViewModel
-import ie.eoinahern.githubclient.mvibase.MviViewModel
-import io.reactivex.Observable
-import io.reactivex.functions.BiFunction
-import io.reactivex.subjects.PublishSubject
-import javax.inject.Inject
 import ie.eoinahern.githubclient.ui.repos.ReposResult.LoadResposResult
+import io.reactivex.functions.BiFunction
+import javax.inject.Inject
 
 
-class ReposViewModel @Inject constructor(private val reposProcessHolder: ReposProcessorHolder) :
-    ViewModel(),
-    MviViewModel<ReposIntent, ReposViewState> {
-
-    private val intentsSubject = PublishSubject.create<ReposIntent>()
-    private val statesObs: Observable<ReposViewState> = compose()
+class ReposViewModel @Inject constructor() :
+    ViewModel() {
 
     private fun convertToAction(intent: ReposIntent): ReposAction {
         return when (intent) {
@@ -23,20 +16,6 @@ class ReposViewModel @Inject constructor(private val reposProcessHolder: ReposPr
             }
         }
     }
-
-    override fun processIntents(obs: Observable<ReposIntent>) {
-        obs.subscribe(intentsSubject)
-    }
-
-    private fun compose(): Observable<ReposViewState> {
-        return intentsSubject.map { intent ->
-            convertToAction(intent)
-        }.compose(reposProcessHolder.actionProcessor)
-            .scan(ReposViewState.getDefault(), reducer)
-            .distinctUntilChanged()
-    }
-
-    override fun states(): Observable<ReposViewState> = statesObs
 
     companion object {
 

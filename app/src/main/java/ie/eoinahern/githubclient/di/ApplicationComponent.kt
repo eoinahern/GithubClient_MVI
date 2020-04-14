@@ -7,7 +7,7 @@ import javax.inject.Singleton
 
 
 @Singleton
-@Component(modules = [ApplicationModule::class, NetworkModule::class, ViewModelModule::class, PagingModule::class])
+@Component(modules = [ApplicationModule::class, NetworkModule::class, PagingModule::class])
 interface ApplicationComponent {
 
     fun inject(login: LoginActivity)
