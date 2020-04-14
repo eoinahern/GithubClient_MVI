@@ -26,5 +26,5 @@ MVI Gihub Client
  - less verbosity, easy to understand. Implemented quickly. 
  - removed a large amount of unnecessary classes when using this architecture after implementing branch.
  - more decoupled. I prefer this arch to the Master branch but it may no be considered "proper" MVI as it didnt add 
-   loads of unneccessary layer of abstraction and donkey work for the developer. 
+   loads of unneccessary layers of abstraction and donkey work for the developer. 
  - utilized Rx, Retrofit, Dagger2. 
