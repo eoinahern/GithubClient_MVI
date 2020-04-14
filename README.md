@@ -18,7 +18,7 @@ MVI Gihub Client
  - a lot of rewritng and verbosity which slowed me down.
  - maybe useful in a bigger application. but the lack of simplicity obfuscated my understanding 
    of the pattern. which, made it harder to work with.
- - wouldnt be what I would call DRY
+ - violates DRY quite a bit. 
  - doesnt adhere to KISS either
    
  ray_wenderlich_book_example branch (Advanced android app architectures book)
